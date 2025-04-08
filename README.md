@@ -1,39 +1,58 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+TODO: Put a short description of the package here.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+TODO: List what your package can do.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+TODO: Add more details
 
 ## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Create config
 
 ```dart
-const like = 'sample';
+final dashboardConfig = DashboardGrid(
+    maxColumns: 4,
+);
+```
+
+Dashboard Config has a listener which can notify when config has changed during edit mode by draf and drop, or when widget added programmatically
+
+```dart
+void _configListener() {
+    setState(() {});
+}
+
+dashboardConfig.addListener(_configListener);
+```
+
+You can add widget to the dashboard
+
+```dart
+dashboardConfig.addWidget(
+    DashboardWidget(
+        id: id,     // Unique Id for the widget to easy locate it
+        x: 0,       // X coordinate where you can place the widget
+        y: 0,       // Y coordinate where you can place the widget
+        width: 1,   // Width in column size
+        height: 2,  // height in column size
+        builder: (context) {
+            return YourWidgetHere();
+        },
+    ),
+),
+```
+
+Supply config during widget creation
+
+```dart
+Dashboard(
+    editMode: editMode,
+    config: dashboardConfig,
+);
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+TODO: Add example folder
