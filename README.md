@@ -1,12 +1,15 @@
-TODO: Put a short description of the package here.
+This package allows to show users dashboard, with drag and drop support in Edit Mode.
 
 ## Features
 
-TODO: List what your package can do.
+* Can place widgets programatically by specifying X,Y of the widget
+* Shifts widgets if newly placed widget overlaps with existin widgets
 
 ## Getting started
 
-TODO: Add more details
+```bash
+flutter pub add dashboard_grid
+```
 
 ## Usage
 Create config
@@ -55,4 +58,6 @@ Dashboard(
 
 ## Additional information
 
-TODO: Add example folder
+Whats next:
+* Add example folder
+* Allow widgets with height more than 1
