@@ -1,0 +1,28 @@
+name: CI/CD checks
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+            channel: stable
+      - name: Build
+        run: |
+            flutter pub get
+            flutter test --coverage
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
