@@ -1,11 +1,11 @@
 name: dashboard_grid
-description: "Configuratble dashboard widget, which allows drag and drop"
+description: "Configurable dashboard widget, which allows drag and drop"
 version: 0.0.1
-homepage: 
+homepage: https://github.com/nonameden/dashboard_grid
 
 environment:
   sdk: ^3.7.2
-  flutter: ">=1.17.0"
+  flutter: ">=3.29.0"
 
 dependencies:
   flutter:
@@ -15,5 +15,3 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-
-flutter:
