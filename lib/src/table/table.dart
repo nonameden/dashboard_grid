@@ -1,8 +1,10 @@
 import 'dart:collection';
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -253,6 +255,8 @@ class TableViewport extends TwoDimensionalViewport {
       ..mainAxis = mainAxis
       ..cacheExtent = cacheExtent
       ..clipBehavior = clipBehavior
+      ..editMode = editMode
+      ..cellDecoration = cellDecoration
       ..delegate = delegate as TableCellDelegateMixin;
   }
 }
@@ -290,8 +294,8 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
     super.delegate = value;
   }
 
-  final TableCellDecoration cellDecoration;
-  final bool editMode;
+  TableCellDecoration cellDecoration;
+  bool editMode;
 
   // Skipped vicinities for the current frame based on merged cells.
   // This prevents multiple build calls for the same cell that spans multiple
@@ -1289,12 +1293,49 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
     )!;
   }
 
+  void _drawCellsPreview(PaintingContext context, Offset offset) {
+    // Custom
+    final rowStart = _firstNonPinnedCell?.row ?? 0;
+    final columnStart = _firstNonPinnedCell?.column ?? 0;
+    final rowEnd = _lastNonPinnedCell?.row ?? 0;
+    final columnEnd = _lastNonPinnedCell?.column ?? 0;
+
+    for (int column = columnStart; column <= (columnEnd); column++) {
+      final columnConfig = _columnMetrics[column];
+      if (columnConfig == null) {
+        continue;
+      }
+      for (int row = rowStart; row <= (rowEnd); row++) {
+        final rowConfig = _rowMetrics[row];
+        if (rowConfig == null) {
+          continue;
+        }
+
+        final child = getChildFor(ChildVicinity(xIndex: column, yIndex: row));
+        final data = child != null ? parentDataOf(child) : null;
+        final paintOffset = data?.paintOffset ?? Offset.zero;
+
+        final rect = Rect.fromPoints(
+          paintOffset + offset,
+          paintOffset + offset + Offset(columnConfig.extent, rowConfig.extent),
+        );
+
+        cellDecoration.paint(context, rect);
+      }
+    }
+  }
+
   void _paintCells({
     required PaintingContext context,
     required TableVicinity leadingVicinity,
     required TableVicinity trailingVicinity,
     required Offset offset,
   }) {
+    // Draw cells in edit mode
+    if (editMode) {
+      _drawCellsPreview(context, offset);
+    }
+
     // Column decorations
     final LinkedHashMap<Rect, TableSpanDecoration> foregroundColumns =
         LinkedHashMap<Rect, TableSpanDecoration>();

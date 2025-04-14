@@ -10,10 +10,16 @@ import 'table/table_cell.dart';
 import 'table/table_cell_decoration.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key, this.editMode = false, required this.config});
+  const Dashboard({
+    super.key,
+    this.editMode = false,
+    required this.config,
+    this.cellPreviewDecoration = const TableCellDecoration(),
+  });
 
   final bool editMode;
   final DashboardGrid config;
+  final TableCellDecoration cellPreviewDecoration;
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -124,7 +130,7 @@ class _DashboardState extends State<Dashboard> {
           },
           columnBuilder: _buildColumnSpan,
           rowBuilder: _buildRowSpan,
-          cellDecoration: const TableCellDecoration(),
+          cellDecoration: widget.cellPreviewDecoration,
           editMode: widget.editMode,
         ),
       ),
@@ -189,13 +195,13 @@ class _DashboardState extends State<Dashboard> {
 
   TableSpan _buildColumnSpan(int index) {
     return TableSpan(
-      backgroundDecoration:
-          widget.editMode
-              ? SpanDecoration(
-                color: Colors.red.withAlpha(100),
-                consumeSpanPadding: false,
-              )
-              : null,
+      // backgroundDecoration:
+      //     widget.editMode
+      //         ? SpanDecoration(
+      //           color: Colors.red.withAlpha(100),
+      //           consumeSpanPadding: false,
+      //         )
+      //         : null,
       padding: SpanPadding(
         leading: kWidgetSpacing,
         trailing: widget.config.maxColumns - 1 == index ? kWidgetSpacing : 0.0,
@@ -211,13 +217,13 @@ class _DashboardState extends State<Dashboard> {
         trailing:
             widget.config.currentHeight - 1 == index ? kWidgetSpacing : 0.0,
       ),
-      backgroundDecoration:
-          widget.editMode
-              ? SpanDecoration(
-                color: Colors.green.withAlpha(100),
-                consumeSpanPadding: false,
-              )
-              : null,
+      // backgroundDecoration:
+      //     widget.editMode
+      //         ? SpanDecoration(
+      //           color: Colors.green.withAlpha(100),
+      //           consumeSpanPadding: false,
+      //         )
+      //         : null,
       extent: const FixedTableSpanExtent(kWidgetHeight),
     );
   }

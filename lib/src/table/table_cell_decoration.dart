@@ -12,6 +12,14 @@ class TableCellDecoration {
     ),
   });
 
+  void paint(
+      PaintingContext context,
+      Rect rect,
+  ) {
+    final painter = decoration.createBoxPainter();
+    painter.paint(context.canvas, rect.topLeft, ImageConfiguration(size: rect.size));
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

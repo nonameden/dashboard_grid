@@ -4,12 +4,30 @@ import 'package:flutter/foundation.dart';
 
 import 'dashboard_widget.dart';
 
+class DashboardGridChangeSnapshot {
+  DashboardGridChangeSnapshot({
+    required this.from,
+    required this.to,
+  });
+
+  final DashboardWidget from;
+  final DashboardWidget to;
+}
+
+typedef DashboardGridChangeListener =
+    void Function(List<DashboardGridChangeSnapshot> changes);
+
 class DashboardGrid with ChangeNotifier {
-  DashboardGrid({required this.maxColumns, this.currentHeight = 1});
+  DashboardGrid({
+    required this.maxColumns,
+    this.currentHeight = 1,
+    this.listener,
+  });
 
   final int maxColumns;
   int currentHeight;
   List<DashboardWidget> _widgets = [];
+  DashboardGridChangeListener? listener;
 
   int get size => _widgets.length;
 
