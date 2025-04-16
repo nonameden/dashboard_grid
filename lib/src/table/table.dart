@@ -1300,20 +1300,31 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
     final rowEnd = _lastNonPinnedCell?.row ?? 0;
     final columnEnd = _lastNonPinnedCell?.column ?? 0;
 
-    for (int column = columnStart; column <= (columnEnd); column++) {
-      final columnConfig = _columnMetrics[column];
-      if (columnConfig == null) {
+    Rect prev = Rect.zero;
+
+    for (int row = rowStart; row <= (rowEnd); row++) {
+      final rowConfig = _rowMetrics[row];
+      if (rowConfig == null) {
         continue;
       }
-      for (int row = rowStart; row <= (rowEnd); row++) {
-        final rowConfig = _rowMetrics[row];
-        if (rowConfig == null) {
+
+      for (int column = columnStart; column <= (columnEnd); column++) {
+        final columnConfig = _columnMetrics[column];
+        if (columnConfig == null) {
           continue;
         }
 
-        final child = getChildFor(ChildVicinity(xIndex: column, yIndex: row));
+        final child = getChildFor(
+          TableVicinity(column: column, row: row),
+          mapMergedVicinityToCanonicalChild: false,
+        );
         final data = child != null ? parentDataOf(child) : null;
-        final paintOffset = data?.paintOffset ?? Offset.zero;
+        final paintOffset =
+            data?.paintOffset ??
+            Offset(
+              prev.right + columnConfig.configuration.padding.leading,
+              prev.top,
+            );
 
         final rect = Rect.fromPoints(
           paintOffset + offset,
@@ -1321,6 +1332,26 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
         );
 
         cellDecoration.paint(context, rect);
+
+        // final painter = TextPainter(
+        //   text: TextSpan(text: "$column:$row\n$rect\n$prev}"),
+        //   textDirection: TextDirection.ltr,
+        // );
+        //
+        // painter.layout();
+        // painter.paint(
+        //   context.canvas,
+        //   rect.center - Offset(painter.width / 2, painter.height / 2),
+        // );
+        //
+        prev = Rect.fromPoints(
+          rect.topLeft,
+          rect.bottomRight +
+              Offset(
+                columnConfig.configuration.padding.trailing,
+                rowConfig.configuration.padding.trailing,
+              ),
+        );
       }
     }
   }

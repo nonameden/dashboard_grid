@@ -1,3 +1,9 @@
+## 0.0.3
+
+* Fix for crash when widget size is different to 1x1
+* Exported `TableCellDecoration`
+
+
 ## 0.0.2
 
 * Added cell preview decoration configurable

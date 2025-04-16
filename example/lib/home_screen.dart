@@ -138,6 +138,13 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Dashboard(
         editMode: editMode,
         config: dashboardConfig,
+        cellPreviewDecoration: TableCellDecoration(
+          decoration: BoxDecoration(
+            color: Colors.grey.withValues(alpha: 0.5),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.grey),
+          ),
+        ),
       ),
     );
   }

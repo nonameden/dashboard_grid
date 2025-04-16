@@ -1,7 +1,7 @@
 name: dashboard_grid
 description: >-
   Configurable dashboard widget, which allows drag and drop
-version: 0.0.2
+version: 0.0.3
 repository: https://github.com/nonameden/dashboard_grid
 
 topics:
