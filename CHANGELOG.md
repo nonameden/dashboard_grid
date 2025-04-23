@@ -1,3 +1,8 @@
+## 0.0.4
+
+* Support for height more than 1
+
+
 ## 0.0.3
 
 * Fix for crash when widget size is different to 1x1

@@ -151,14 +151,25 @@ class _DashboardState extends State<Dashboard> {
         widget.editMode
             ? Draggable(
               data: config,
-              feedback: Opacity(
-                opacity: 0.5,
-                child: ConstrainedBox(
-                  constraints: constraints,
-                  child: config.builder(context),
-                ),
+              feedback: Builder(
+                builder: (context) {
+                  return ConstrainedBox(
+                    constraints: constraints,
+                    child: config.builder(context),
+                  );
+                },
               ),
-              childWhenDragging: Container(),
+              childWhenDragging: Builder(
+                builder: (context) {
+                  return Opacity(
+                    opacity: 0.5,
+                    child: ConstrainedBox(
+                      constraints: constraints,
+                      child: config.builder(context),
+                    ),
+                  );
+                },
+              ),
               child: DragTarget<DashboardWidget>(
                 builder: (context, candidate, rejected) {
                   return config.builder(context);
@@ -189,19 +200,14 @@ class _DashboardState extends State<Dashboard> {
     return TableViewCell(
       columnMergeStart: config.x,
       columnMergeSpan: config.width,
+      rowMergeStart: config.y,
+      rowMergeSpan: config.height,
       child: child,
     );
   }
 
   TableSpan _buildColumnSpan(int index) {
     return TableSpan(
-      // backgroundDecoration:
-      //     widget.editMode
-      //         ? SpanDecoration(
-      //           color: Colors.red.withAlpha(100),
-      //           consumeSpanPadding: false,
-      //         )
-      //         : null,
       padding: SpanPadding(
         leading: kWidgetSpacing,
         trailing: widget.config.maxColumns - 1 == index ? kWidgetSpacing : 0.0,
@@ -217,13 +223,6 @@ class _DashboardState extends State<Dashboard> {
         trailing:
             widget.config.currentHeight - 1 == index ? kWidgetSpacing : 0.0,
       ),
-      // backgroundDecoration:
-      //     widget.editMode
-      //         ? SpanDecoration(
-      //           color: Colors.green.withAlpha(100),
-      //           consumeSpanPadding: false,
-      //         )
-      //         : null,
       extent: const FixedTableSpanExtent(kWidgetHeight),
     );
   }

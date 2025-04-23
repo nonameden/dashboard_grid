@@ -105,6 +105,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     value: Offset(1, 2),
                     child: Text('1x2'),
                   ),
+                  const PopupMenuItem(
+                    value: Offset(1, 3),
+                    child: Text('1x3'),
+                  ),
+                  const PopupMenuItem(
+                    value: Offset(2, 2),
+                    child: Text('2x2'),
+                  ),
                 ];
               },
               onSelected: (value) {
@@ -116,11 +124,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     y: 0,
                     width: value.dx.toInt(),
                     height: value.dy.toInt(),
-                    builder: (context) => Container(
-                      color: Colors.red,
+                    builder: (context) {
+                      var themeData = Theme.of(context);
+                      return Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: themeData.colorScheme.primary),
+                        borderRadius: BorderRadius.circular(10),
+                        color: themeData.colorScheme.primaryContainer,
+                      ),
                       alignment: Alignment.center,
-                      child: Text('Widget $id'),
-                    ),
+                      child: Text(
+                        'Widget $id',
+                        style: themeData.textTheme.titleSmall,
+                      ),
+                    );
+                    },
                   ),
                 );
               },

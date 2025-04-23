@@ -1300,8 +1300,6 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
     final rowEnd = _lastNonPinnedCell?.row ?? 0;
     final columnEnd = _lastNonPinnedCell?.column ?? 0;
 
-    Rect prev = Rect.zero;
-
     for (int row = rowStart; row <= (rowEnd); row++) {
       final rowConfig = _rowMetrics[row];
       if (rowConfig == null) {
@@ -1314,43 +1312,53 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
           continue;
         }
 
+        final vicinity = TableVicinity(column: column, row: row);
+        final mergedVicinity = _mergedVicinities[vicinity];
+
         final child = getChildFor(
-          TableVicinity(column: column, row: row),
+          mergedVicinity ?? vicinity,
           mapMergedVicinityToCanonicalChild: false,
         );
-        final data = child != null ? parentDataOf(child) : null;
-        final paintOffset =
-            data?.paintOffset ??
+
+        final cellParentData = child != null ? parentDataOf(child) : null;
+        if (cellParentData == null) {
+          // Something wrong with calculations, impossible situation
+          continue;
+        }
+
+        Offset paintOffset = cellParentData.paintOffset ??
             Offset(
-              prev.right + columnConfig.configuration.padding.leading,
-              prev.top,
+              columnConfig.configuration.padding.leading,
+              rowConfig.configuration.padding.leading,
             );
 
-        final rect = Rect.fromPoints(
-          paintOffset + offset,
-          paintOffset + offset + Offset(columnConfig.extent, rowConfig.extent),
+        final int firstColumn = cellParentData.columnMergeStart ?? column;
+        final int firstRow = cellParentData.rowMergeStart ?? row;
+
+        paintOffset += Offset(
+          cellParentData.columnMergeSpan != 0 ? (columnConfig.extent + columnConfig.configuration.padding.leading) * (column - firstColumn) : 0,
+          cellParentData.rowMergeSpan != 0 ? (rowConfig.extent + rowConfig.configuration.padding.leading) * (row - firstRow) : 0,
+        );
+
+        final lt = paintOffset + offset;
+        final rect = Rect.fromLTWH(
+          lt.dx,
+          lt.dy,
+          columnConfig.extent,
+          rowConfig.extent,
         );
 
         cellDecoration.paint(context, rect);
 
-        // final painter = TextPainter(
-        //   text: TextSpan(text: "$column:$row\n$rect\n$prev}"),
-        //   textDirection: TextDirection.ltr,
-        // );
-        //
-        // painter.layout();
-        // painter.paint(
-        //   context.canvas,
-        //   rect.center - Offset(painter.width / 2, painter.height / 2),
-        // );
-        //
-        prev = Rect.fromPoints(
-          rect.topLeft,
-          rect.bottomRight +
-              Offset(
-                columnConfig.configuration.padding.trailing,
-                rowConfig.configuration.padding.trailing,
-              ),
+        final painter = TextPainter(
+          text: TextSpan(text: "$column:$row\nr:$rect\nc:$child"),
+          textDirection: TextDirection.ltr,
+        );
+
+        painter.layout();
+        painter.paint(
+          context.canvas,
+          rect.center - Offset(painter.width / 2, painter.height / 2),
         );
       }
     }
@@ -1367,339 +1375,6 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
       _drawCellsPreview(context, offset);
     }
 
-    // Column decorations
-    final LinkedHashMap<Rect, TableSpanDecoration> foregroundColumns =
-        LinkedHashMap<Rect, TableSpanDecoration>();
-    final LinkedHashMap<Rect, TableSpanDecoration> backgroundColumns =
-        LinkedHashMap<Rect, TableSpanDecoration>();
-
-    final TableSpan rowSpan = _rowMetrics[leadingVicinity.row]!.configuration;
-    for (
-      int column = leadingVicinity.column;
-      column <= trailingVicinity.column;
-      column++
-    ) {
-      TableSpan columnSpan = _columnMetrics[column]!.configuration;
-      if (columnSpan.backgroundDecoration != null ||
-          columnSpan.foregroundDecoration != null ||
-          _mergedColumns.contains(column)) {
-        final List<({RenderBox leading, RenderBox trailing})> decorationCells =
-            <({RenderBox leading, RenderBox trailing})>[];
-        if (_mergedColumns.isEmpty || !_mergedColumns.contains(column)) {
-          // One decoration across the whole column.
-          decorationCells.add((
-            leading:
-                getChildFor(
-                  TableVicinity(column: column, row: leadingVicinity.row),
-                )!,
-            trailing:
-                getChildFor(
-                  TableVicinity(column: column, row: trailingVicinity.row),
-                )!,
-          ));
-        } else {
-          // Walk through the rows to separate merged cells for decorating. A
-          // merged column takes the decoration of its leading column.
-          // +---------+-------+-------+
-          // |         |       |       |
-          // | 1 rect  |       |       |
-          // +---------+-------+-------+
-          // | merged          |       |
-          // | 1 rect          |       |
-          // +---------+-------+-------+
-          // | 1 rect  |       |       |
-          // |         |       |       |
-          // +---------+-------+-------+
-          late RenderBox leadingCell;
-          late RenderBox trailingCell;
-          int currentRow = leadingVicinity.row;
-          while (currentRow <= trailingVicinity.row) {
-            TableVicinity vicinity = TableVicinity(
-              column: column,
-              row: currentRow,
-            );
-            leadingCell = getChildFor(vicinity)!;
-            if (parentDataOf(leadingCell).columnMergeStart != null) {
-              // Merged portion decorated individually since it exceeds the
-              // single column width.
-              decorationCells.add((
-                leading: leadingCell,
-                trailing: leadingCell,
-              ));
-              currentRow++;
-              continue;
-            }
-            // If this is not a merged cell, collect up all of the cells leading
-            // up to, or following after, the merged cell so we can decorate
-            // efficiently with as few rects as possible.
-            RenderBox? nextCell = leadingCell;
-            while (nextCell != null &&
-                parentDataOf(nextCell).columnMergeStart == null) {
-              final TableViewParentData parentData = parentDataOf(nextCell);
-              if (parentData.rowMergeStart != null) {
-                currentRow =
-                    parentData.rowMergeStart! + parentData.rowMergeSpan!;
-              } else {
-                currentRow += 1;
-              }
-              trailingCell = nextCell;
-              vicinity = vicinity.copyWith(row: currentRow);
-              nextCell = getChildFor(
-                vicinity,
-                mapMergedVicinityToCanonicalChild: false,
-              );
-            }
-            decorationCells.add((leading: leadingCell, trailing: trailingCell));
-          }
-        }
-
-        Rect getColumnRect({
-          required RenderBox leadingCell,
-          required RenderBox trailingCell,
-          required bool consumePadding,
-        }) {
-          final ({double leading, double trailing}) offsetCorrection =
-              axisDirectionIsReversed(verticalAxisDirection)
-                  ? (
-                    leading: leadingCell.size.height,
-                    trailing: trailingCell.size.height,
-                  )
-                  : (leading: 0.0, trailing: 0.0);
-          return Rect.fromPoints(
-            parentDataOf(leadingCell).paintOffset! +
-                offset -
-                Offset(
-                  consumePadding ? columnSpan.padding.leading : 0.0,
-                  rowSpan.padding.leading - offsetCorrection.leading,
-                ),
-            parentDataOf(trailingCell).paintOffset! +
-                offset +
-                Offset(trailingCell.size.width, trailingCell.size.height) +
-                Offset(
-                  consumePadding ? columnSpan.padding.trailing : 0.0,
-                  rowSpan.padding.trailing - offsetCorrection.trailing,
-                ),
-          );
-        }
-
-        for (final ({RenderBox leading, RenderBox trailing}) cell
-            in decorationCells) {
-          // If this was a merged cell, the decoration is defined by the leading
-          // cell, which may come from a different column.
-          final int columnIndex =
-              parentDataOf(cell.leading).columnMergeStart ??
-              parentDataOf(cell.leading).tableVicinity.column;
-          columnSpan = _columnMetrics[columnIndex]!.configuration;
-          if (columnSpan.backgroundDecoration != null) {
-            final Rect rect = getColumnRect(
-              leadingCell: cell.leading,
-              trailingCell: cell.trailing,
-              consumePadding:
-                  columnSpan.backgroundDecoration!.consumeSpanPadding,
-            );
-            backgroundColumns[rect] = columnSpan.backgroundDecoration!;
-          }
-          if (columnSpan.foregroundDecoration != null) {
-            final Rect rect = getColumnRect(
-              leadingCell: cell.leading,
-              trailingCell: cell.trailing,
-              consumePadding:
-                  columnSpan.foregroundDecoration!.consumeSpanPadding,
-            );
-            foregroundColumns[rect] = columnSpan.foregroundDecoration!;
-          }
-        }
-      }
-    }
-
-    // Row decorations
-    final LinkedHashMap<Rect, TableSpanDecoration> foregroundRows =
-        LinkedHashMap<Rect, TableSpanDecoration>();
-    final LinkedHashMap<Rect, TableSpanDecoration> backgroundRows =
-        LinkedHashMap<Rect, TableSpanDecoration>();
-    final TableSpan columnSpan =
-        _columnMetrics[leadingVicinity.column]!.configuration;
-    for (int row = leadingVicinity.row; row <= trailingVicinity.row; row++) {
-      TableSpan rowSpan = _rowMetrics[row]!.configuration;
-      if (rowSpan.backgroundDecoration != null ||
-          rowSpan.foregroundDecoration != null ||
-          _mergedRows.contains(row)) {
-        final List<({RenderBox leading, RenderBox trailing})> decorationCells =
-            <({RenderBox leading, RenderBox trailing})>[];
-        if (_mergedRows.isEmpty || !_mergedRows.contains(row)) {
-          // One decoration across the whole row.
-          decorationCells.add((
-            leading:
-                getChildFor(
-                  TableVicinity(column: leadingVicinity.column, row: row),
-                )!, // leading
-            trailing:
-                getChildFor(
-                  TableVicinity(column: trailingVicinity.column, row: row),
-                )!, // trailing
-          ));
-        } else {
-          // Walk through the columns to separate merged cells for decorating. A
-          // merged row takes the decoration of its leading row.
-          // +---------+--------+--------+
-          // | 1 rect  | merged | 1 rect |
-          // |         | 1 rect |        |
-          // +---------+        +--------+
-          // |         |        |        |
-          // |         |        |        |
-          // +---------+--------+--------+
-          // |         |        |        |
-          // |         |        |        |
-          // +---------+--------+--------+
-          late RenderBox leadingCell;
-          late RenderBox trailingCell;
-          int currentColumn = leadingVicinity.column;
-          while (currentColumn <= trailingVicinity.column) {
-            TableVicinity vicinity = TableVicinity(
-              column: currentColumn,
-              row: row,
-            );
-            leadingCell = getChildFor(vicinity)!;
-            if (parentDataOf(leadingCell).rowMergeStart != null) {
-              // Merged portion decorated individually since it exceeds the
-              // single row height.
-              decorationCells.add((
-                leading: leadingCell,
-                trailing: leadingCell,
-              ));
-              currentColumn++;
-              continue;
-            }
-            // If this is not a merged cell, collect up all of the cells leading
-            // up to, or following after, the merged cell so we can decorate
-            // efficiently with as few rects as possible.
-            RenderBox? nextCell = leadingCell;
-            while (nextCell != null &&
-                parentDataOf(nextCell).rowMergeStart == null) {
-              final TableViewParentData parentData = parentDataOf(nextCell);
-              if (parentData.columnMergeStart != null) {
-                currentColumn =
-                    parentData.columnMergeStart! + parentData.columnMergeSpan!;
-              } else {
-                currentColumn += 1;
-              }
-              trailingCell = nextCell;
-              vicinity = vicinity.copyWith(column: currentColumn);
-              nextCell = getChildFor(
-                vicinity,
-                mapMergedVicinityToCanonicalChild: false,
-              );
-            }
-            decorationCells.add((leading: leadingCell, trailing: trailingCell));
-          }
-        }
-
-        Rect getRowRect({
-          required RenderBox leadingCell,
-          required RenderBox trailingCell,
-          required bool consumePadding,
-        }) {
-          final ({double leading, double trailing}) offsetCorrection =
-              axisDirectionIsReversed(horizontalAxisDirection)
-                  ? (
-                    leading: leadingCell.size.width,
-                    trailing: trailingCell.size.width,
-                  )
-                  : (leading: 0.0, trailing: 0.0);
-          return Rect.fromPoints(
-            parentDataOf(leadingCell).paintOffset! +
-                offset -
-                Offset(
-                  columnSpan.padding.leading - offsetCorrection.leading,
-                  consumePadding ? rowSpan.padding.leading : 0.0,
-                ),
-            parentDataOf(trailingCell).paintOffset! +
-                offset +
-                Offset(trailingCell.size.width, trailingCell.size.height) +
-                Offset(
-                  columnSpan.padding.leading - offsetCorrection.trailing,
-                  consumePadding ? rowSpan.padding.trailing : 0.0,
-                ),
-          );
-        }
-
-        for (final ({RenderBox leading, RenderBox trailing}) cell
-            in decorationCells) {
-          // If this was a merged cell, the decoration is defined by the leading
-          // cell, which may come from a different row.
-          final int rowIndex =
-              parentDataOf(cell.leading).rowMergeStart ??
-              parentDataOf(cell.trailing).tableVicinity.row;
-          rowSpan = _rowMetrics[rowIndex]!.configuration;
-          if (rowSpan.backgroundDecoration != null) {
-            final Rect rect = getRowRect(
-              leadingCell: cell.leading,
-              trailingCell: cell.trailing,
-              consumePadding: rowSpan.backgroundDecoration!.consumeSpanPadding,
-            );
-            backgroundRows[rect] = rowSpan.backgroundDecoration!;
-          }
-          if (rowSpan.foregroundDecoration != null) {
-            final Rect rect = getRowRect(
-              leadingCell: cell.leading,
-              trailingCell: cell.trailing,
-              consumePadding: rowSpan.foregroundDecoration!.consumeSpanPadding,
-            );
-            foregroundRows[rect] = rowSpan.foregroundDecoration!;
-          }
-        }
-      }
-    }
-
-    // Get to painting.
-    // Painting is done in row or column major ordering according to the main
-    // axis, with background decorations first, cells next, and foreground
-    // decorations last.
-
-    // Background decorations
-    switch (mainAxis) {
-      // Default, row major order. Rows go first.
-      case Axis.vertical:
-        backgroundRows.forEach((Rect rect, TableSpanDecoration decoration) {
-          final TableSpanDecorationPaintDetails paintingDetails =
-              TableSpanDecorationPaintDetails(
-                canvas: context.canvas,
-                rect: rect,
-                axisDirection: horizontalAxisDirection,
-              );
-          decoration.paint(paintingDetails);
-        });
-        backgroundColumns.forEach((Rect rect, TableSpanDecoration decoration) {
-          final TableSpanDecorationPaintDetails paintingDetails =
-              TableSpanDecorationPaintDetails(
-                canvas: context.canvas,
-                rect: rect,
-                axisDirection: verticalAxisDirection,
-              );
-          decoration.paint(paintingDetails);
-        });
-      // Column major order. Columns go first.
-      case Axis.horizontal:
-        backgroundColumns.forEach((Rect rect, TableSpanDecoration decoration) {
-          final TableSpanDecorationPaintDetails paintingDetails =
-              TableSpanDecorationPaintDetails(
-                canvas: context.canvas,
-                rect: rect,
-                axisDirection: verticalAxisDirection,
-              );
-          decoration.paint(paintingDetails);
-        });
-        backgroundRows.forEach((Rect rect, TableSpanDecoration decoration) {
-          final TableSpanDecorationPaintDetails paintingDetails =
-              TableSpanDecorationPaintDetails(
-                canvas: context.canvas,
-                rect: rect,
-                axisDirection: horizontalAxisDirection,
-              );
-          decoration.paint(paintingDetails);
-        });
-    }
-
     // Cells
     for (
       int column = leadingVicinity.column;
@@ -1712,6 +1387,7 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
           vicinity,
           mapMergedVicinityToCanonicalChild: false,
         );
+
         if (cell == null) {
           // Covered by a merged cell
           assert(
@@ -1723,55 +1399,12 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
           );
           continue;
         }
+
         final TableViewParentData cellParentData = parentDataOf(cell);
         if (cellParentData.isVisible) {
           context.paintChild(cell, offset + cellParentData.paintOffset!);
         }
       }
-    }
-
-    // Foreground decorations
-    switch (mainAxis) {
-      // Default, row major order. Rows go first.
-      case Axis.vertical:
-        foregroundRows.forEach((Rect rect, TableSpanDecoration decoration) {
-          final TableSpanDecorationPaintDetails paintingDetails =
-              TableSpanDecorationPaintDetails(
-                canvas: context.canvas,
-                rect: rect,
-                axisDirection: horizontalAxisDirection,
-              );
-          decoration.paint(paintingDetails);
-        });
-        foregroundColumns.forEach((Rect rect, TableSpanDecoration decoration) {
-          final TableSpanDecorationPaintDetails paintingDetails =
-              TableSpanDecorationPaintDetails(
-                canvas: context.canvas,
-                rect: rect,
-                axisDirection: verticalAxisDirection,
-              );
-          decoration.paint(paintingDetails);
-        });
-      // Column major order. Columns go first.
-      case Axis.horizontal:
-        foregroundColumns.forEach((Rect rect, TableSpanDecoration decoration) {
-          final TableSpanDecorationPaintDetails paintingDetails =
-              TableSpanDecorationPaintDetails(
-                canvas: context.canvas,
-                rect: rect,
-                axisDirection: verticalAxisDirection,
-              );
-          decoration.paint(paintingDetails);
-        });
-        foregroundRows.forEach((Rect rect, TableSpanDecoration decoration) {
-          final TableSpanDecorationPaintDetails paintingDetails =
-              TableSpanDecorationPaintDetails(
-                canvas: context.canvas,
-                rect: rect,
-                axisDirection: horizontalAxisDirection,
-              );
-          decoration.paint(paintingDetails);
-        });
     }
   }
 

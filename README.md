@@ -1,3 +1,5 @@
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=nonameden_dashboard_grid&metric=coverage)](https://sonarcloud.io/summary/new_code?id=nonameden_dashboard_grid)
+
 This package allows to show users dashboard, with drag and drop support in Edit Mode.
 
 ## Features
