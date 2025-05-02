@@ -1,3 +1,9 @@
+## 0.0.5
+
+* It is possible now specify size of the widget and spacing between them
+* Default constants for width/height/spacing is exported
+
+
 ## 0.0.4
 
 * Support for height more than 1

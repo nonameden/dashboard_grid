@@ -13,12 +13,18 @@ class Dashboard extends StatefulWidget {
   const Dashboard({
     super.key,
     this.editMode = false,
+    this.widgetWidth = kWidgetWidth,
+    this.widgetHeight = kWidgetHeight,
+    this.widgetSpacing = kWidgetSpacing,
     required this.config,
     this.cellPreviewDecoration = const TableCellDecoration(),
   });
 
   final bool editMode;
   final DashboardGrid config;
+  final double widgetWidth;
+  final double widgetHeight;
+  final double widgetSpacing;
   final TableCellDecoration cellPreviewDecoration;
 
   @override
@@ -192,7 +198,6 @@ class _DashboardState extends State<Dashboard> {
               ),
               onDragUpdate: (details) {
                 // Update details
-                // print(details.localPosition);
               },
             )
             : config.builder(context);
@@ -209,21 +214,21 @@ class _DashboardState extends State<Dashboard> {
   TableSpan _buildColumnSpan(int index) {
     return TableSpan(
       padding: SpanPadding(
-        leading: kWidgetSpacing,
+        leading: widget.widgetSpacing,
         trailing: widget.config.maxColumns - 1 == index ? kWidgetSpacing : 0.0,
       ),
-      extent: const FixedTableSpanExtent(kWidgetWidth),
+      extent: FixedTableSpanExtent(widget.widgetWidth),
     );
   }
 
   TableSpan _buildRowSpan(int index) {
     return TableSpan(
       padding: SpanPadding(
-        leading: kWidgetSpacing,
+        leading: widget.widgetSpacing,
         trailing:
             widget.config.currentHeight - 1 == index ? kWidgetSpacing : 0.0,
       ),
-      extent: const FixedTableSpanExtent(kWidgetHeight),
+      extent: FixedTableSpanExtent(widget.widgetHeight),
     );
   }
 }
