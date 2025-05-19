@@ -50,11 +50,11 @@ class DashboardGrid with ChangeNotifier {
 
   Iterable<DashboardWidget> get widgets => [..._widgets];
 
-  DashboardWidget? getWidgetAt(int x, int y) {
+  DashboardWidget? getWidgetAt({required int x, required int y}) {
     return _getWidgetAt(_widgets, x, y);
   }
 
-  void moveWidget(String widgetId, int x, int y) {
+  void moveWidget(String widgetId, {required int x, required int y}) {
     DashboardWidget? widget;
     try {
       widget = _widgets.firstWhere((element) => element.id == widgetId);
@@ -245,6 +245,19 @@ class DashboardGrid with ChangeNotifier {
     return DashboardGrid(maxColumns: maxColumns, currentHeight: currentHeight)
       .._widgets = _widgets.map((e) => e.copyWith()).toList();
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DashboardGrid &&
+          runtimeType == other.runtimeType &&
+          maxColumns == other.maxColumns &&
+          currentHeight == other.currentHeight &&
+          _widgets == other._widgets;
+
+  @override
+  int get hashCode =>
+      Object.hash(maxColumns, currentHeight, listener, _widgets);
 }
 
 class NotEnoughSpaceException implements Exception {

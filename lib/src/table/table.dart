@@ -1348,16 +1348,16 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
 
         cellDecoration.paint(context, rect);
 
-        final painter = TextPainter(
-          text: TextSpan(text: "$column:$row\nr:$rect\nc:$child"),
-          textDirection: TextDirection.ltr,
-        );
-
-        painter.layout();
-        painter.paint(
-          context.canvas,
-          rect.center - Offset(painter.width / 2, painter.height / 2),
-        );
+        // final painter = TextPainter(
+        //   text: TextSpan(text: "$column:$row\nr:$rect\nc:$child"),
+        //   textDirection: TextDirection.ltr,
+        // );
+        //
+        // painter.layout();
+        // painter.paint(
+        //   context.canvas,
+        //   rect.center - Offset(painter.width / 2, painter.height / 2),
+        // );
       }
     }
   }

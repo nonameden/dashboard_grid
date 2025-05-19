@@ -5,6 +5,7 @@ import 'common/constants.dart';
 import 'common/span.dart';
 import 'dashboard_grid.dart';
 import 'dashboard_widget.dart';
+import 'dev_tools_controller.dart';
 import 'table/table.dart';
 import 'table/table_cell.dart';
 import 'table/table_cell_decoration.dart';
@@ -28,10 +29,10 @@ class Dashboard extends StatefulWidget {
   final TableCellDecoration cellPreviewDecoration;
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  State<Dashboard> createState() => DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class DashboardState extends State<Dashboard> {
   final yController = ScrollController();
   final xController = ScrollController();
 
@@ -40,12 +41,14 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     widget.config.addListener(_configListener);
+    DevToolsController.registerInDevTools(this);
 
     super.initState();
   }
 
   @override
   void dispose() {
+    DevToolsController.unregisterInDevTools(this);
     widget.config.removeListener(_configListener);
     yController.dispose();
     xController.dispose();
@@ -116,8 +119,8 @@ class _DashboardState extends State<Dashboard> {
                       try {
                         widget.config.moveWidget(
                           details.data.id,
-                          vicinity.xIndex,
-                          vicinity.yIndex,
+                          x: vicinity.xIndex,
+                          y: vicinity.yIndex,
                         );
                       } on NotEnoughSpaceException {
                         // Oops
@@ -144,7 +147,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   TableViewCell? _findBestCellMatch(TableVicinity vicinity) {
-    final config = widget.config.getWidgetAt(vicinity.xIndex, vicinity.yIndex);
+    final config = widget.config.getWidgetAt(x: vicinity.xIndex, y: vicinity.yIndex);
     if (config == null) return null;
 
     BoxConstraints constraints = BoxConstraints.expand(
@@ -184,8 +187,8 @@ class _DashboardState extends State<Dashboard> {
                   try {
                     widget.config.moveWidget(
                       details.data.id,
-                      vicinity.xIndex,
-                      vicinity.yIndex,
+                      x: vicinity.xIndex,
+                      y: vicinity.yIndex,
                     );
                   } on NotEnoughSpaceException {
                     // Oops

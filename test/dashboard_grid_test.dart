@@ -44,7 +44,7 @@ void main() {
     grid.addWidget(config[0]);
 
     expect(grid.size, equals(1));
-    expect(grid.getWidgetAt(0, 0), equals(config[0]));
+    expect(grid.getWidgetAt(x: 0, y: 0), equals(config[0]));
     expect(grid.currentHeight, equals(2));
   });
 
@@ -69,9 +69,36 @@ void main() {
     grid.addWidget(config[0]);
     grid.addWidget(config[2]);
 
-    expect(grid.getWidgetAt(0, 0), equals(config[0]));
-    expect(grid.getWidgetAt(2, 0), equals(config[2]));
+    expect(grid.getWidgetAt(x: 0, y: 0), equals(config[0]));
+    expect(grid.getWidgetAt(x: 2, y: 0), equals(config[2]));
   });
+
+  test(
+    'get widget at [x,y] should return widget if present by point inside that widget',
+    () {
+      final grid = DashboardGrid(maxColumns: 3, currentHeight: 1);
+      final widget = DashboardWidget(
+        id: 'id1',
+        x: 0,
+        y: 0,
+        width: 2,
+        height: 2,
+        builder: (context) {
+          return Container();
+        },
+      );
+      grid.addWidget(widget);
+
+      expect(grid.getWidgetAt(x: 2, y: 0), isNull);
+      expect(grid.getWidgetAt(x: 2, y: 1), isNull);
+      expect(grid.getWidgetAt(x: 0, y: 2), isNull);
+      expect(grid.getWidgetAt(x: 1, y: 2), isNull);
+      expect(grid.getWidgetAt(x: 0, y: 0), equals(widget));
+      expect(grid.getWidgetAt(x: 1, y: 1), equals(widget));
+      expect(grid.getWidgetAt(x: 0, y: 1), equals(widget));
+      expect(grid.getWidgetAt(x: 1, y: 0), equals(widget));
+    },
+  );
 
   test('get widget at [x,y] should return null if no widget', () {
     final grid = DashboardGrid(maxColumns: 3, currentHeight: 1);
@@ -79,8 +106,8 @@ void main() {
     grid.addWidget(config[3]);
     grid.addWidget(config[1]);
 
-    expect(grid.getWidgetAt(0, 0), isNull);
-    expect(grid.getWidgetAt(2, 0), isNull);
+    expect(grid.getWidgetAt(x: 0, y: 0), isNull);
+    expect(grid.getWidgetAt(x: 2, y: 0), isNull);
   });
 
   test('get widget at [x,y] should return widget when cords of the tail', () {
@@ -97,7 +124,7 @@ void main() {
 
     grid.addWidget(widget);
 
-    expect(grid.getWidgetAt(2, 0), widget);
+    expect(grid.getWidgetAt(x: 2, y: 0), widget);
   });
 
   test('should resize widget if width is bigger than dashboard', () {
@@ -113,7 +140,7 @@ void main() {
     );
 
     grid.addWidget(widget);
-    final resizedWidget = grid.getWidgetAt(0, 0);
+    final resizedWidget = grid.getWidgetAt(x: 0, y: 0);
 
     expect(resizedWidget?.id, equals(widget.id));
     expect(resizedWidget?.width, equals(grid.maxColumns));
@@ -143,8 +170,8 @@ void main() {
     grid.addWidget(widget1);
     grid.addWidget(widget2);
 
-    expect(grid.getWidgetAt(0, 0)?.id, equals('id1'));
-    expect(grid.getWidgetAt(1, 0)?.id, equals('id0'));
+    expect(grid.getWidgetAt(x: 0, y: 0)?.id, equals('id1'));
+    expect(grid.getWidgetAt(x: 1, y: 0)?.id, equals('id0'));
   });
 
   test('should shift widget down if not enough space on the right', () {
@@ -171,9 +198,9 @@ void main() {
     grid.addWidget(widget1);
     grid.addWidget(widget2);
 
-    expect(grid.getWidgetAt(0, 0)?.id, equals('id1'));
-    expect(grid.getWidgetAt(1, 0)?.id, isNull);
-    expect(grid.getWidgetAt(0, 1)?.id, equals('id0'));
+    expect(grid.getWidgetAt(x: 0, y: 0)?.id, equals('id1'));
+    expect(grid.getWidgetAt(x: 1, y: 0)?.id, isNull);
+    expect(grid.getWidgetAt(x: 0, y: 1)?.id, equals('id0'));
   });
 
   test(
@@ -220,8 +247,28 @@ void main() {
 
     grid.addWidget(widget1);
     grid.addWidget(widget2);
-    grid.moveWidget(widget2.id, 0, 0);
+    grid.moveWidget(widget2.id, x: 0, y: 0);
 
     expect(grid.currentHeight, 2);
+  });
+
+  test('Relocating widget in self occupied space should be allowed', () {
+    final grid = DashboardGrid(maxColumns: 3, currentHeight: 1);
+
+    final widget1 = DashboardWidget(
+      id: 'id0',
+      x: 0,
+      y: 0,
+      width: 2,
+      height: 2,
+      builder: (context) => Container(),
+    );
+
+    grid.addWidget(widget1);
+    grid.moveWidget(widget1.id, x: 1, y: 1);
+    final result = grid.getWidgetAt(x: 1, y: 1);
+
+    expect(result!.x, 1);
+    expect(result.y, 1);
   });
 }

@@ -1,0 +1,5 @@
+name: dashboard_grid
+version: 0.0.1
+issueTracker: https://github.com/nonameden/dashboard_grid/issues
+materialIconCodePoint: '0xe0b1'
+requiresConnection: true
