@@ -147,13 +147,19 @@ class DashboardState extends State<Dashboard> {
   }
 
   TableViewCell? _findBestCellMatch(TableVicinity vicinity) {
-    final config = widget.config.getWidgetAt(x: vicinity.xIndex, y: vicinity.yIndex);
+    final config = widget.config.getWidgetAt(
+      x: vicinity.xIndex,
+      y: vicinity.yIndex,
+    );
     if (config == null) return null;
 
     BoxConstraints constraints = BoxConstraints.expand(
-      width: kWidgetWidth * config.width + kWidgetSpacing * (config.width - 1),
+      width:
+          widget.widgetWidth * config.width +
+          widget.widgetSpacing * (config.width - 1),
       height:
-          kWidgetHeight * config.height + kWidgetSpacing * (config.height - 1),
+          widget.widgetHeight * config.height +
+          widget.widgetSpacing * (config.height - 1),
     );
 
     final child =
@@ -170,12 +176,43 @@ class DashboardState extends State<Dashboard> {
               ),
               childWhenDragging: Builder(
                 builder: (context) {
-                  return Opacity(
-                    opacity: 0.5,
-                    child: ConstrainedBox(
-                      constraints: constraints,
-                      child: config.builder(context),
-                    ),
+                  return DragTarget<DashboardWidget>(
+                    builder: (context, candidate, rejected) {
+                      return Opacity(
+                        opacity: 0.5,
+                        child: ConstrainedBox(
+                          constraints: constraints,
+                          child: config.builder(context),
+                        ),
+                      );
+                    },
+                    onAcceptWithDetails: (details) {
+                      // Move inside the same widget
+                      final offset = details.offset;
+                      // Translate to indexes
+                      final ix =
+                          offset.dx /
+                          (widget.widgetWidth +
+                              widget.widgetSpacing / (config.width - 1));
+                      final iy =
+                          offset.dy /
+                          (widget.widgetHeight +
+                              widget.widgetSpacing / (config.height - 1));
+
+                      try {
+                        widget.config.moveWidget(
+                          details.data.id,
+                          x: vicinity.xIndex + ix.floor(),
+                          y: vicinity.yIndex + iy.floor(),
+                        );
+
+                        setState(() {});
+                      } on NotEnoughSpaceException {
+                        // Oops
+                      } catch (e) {
+                        rethrow;
+                      }
+                    },
                   );
                 },
               ),
@@ -190,13 +227,13 @@ class DashboardState extends State<Dashboard> {
                       x: vicinity.xIndex,
                       y: vicinity.yIndex,
                     );
+
+                    setState(() {});
                   } on NotEnoughSpaceException {
                     // Oops
                   } catch (e) {
                     rethrow;
                   }
-
-                  setState(() {});
                 },
               ),
               onDragUpdate: (details) {

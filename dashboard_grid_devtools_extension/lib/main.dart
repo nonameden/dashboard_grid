@@ -25,7 +25,7 @@ class _DashboardGridDevToolsExtensionState
   @override
   void initState() {
     super.initState();
-    unawaited(_refreshThings());
+    unawaited(_refresh());
 
     serviceManager.onServiceAvailable.then((service) {
       subscription = service.onExtensionEvent.listen((event) {
@@ -46,7 +46,7 @@ class _DashboardGridDevToolsExtensionState
         actions: [
           IconButton(
             onPressed: () {
-              _refreshThings();
+              _refresh();
             },
             icon: Icon(Icons.refresh),
           ),
@@ -54,14 +54,12 @@ class _DashboardGridDevToolsExtensionState
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: denseSpacing),
-        // child: JsonView.string(message ?? '"No message received yet"'),
-        // child: Container(child: Text("$message")),
         child: JsonView.map(message ?? {'message': 'No message received yet'}),
       ),
     );
   }
 
-  Future<void> _refreshThings() async {
+  Future<void> _refresh() async {
     serviceManager.onServiceAvailable.then((service) async {
       try {
         final response = await service.callServiceExtension(
