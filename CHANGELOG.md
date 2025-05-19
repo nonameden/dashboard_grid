@@ -2,6 +2,7 @@
 
 * Allow dragging widgets inside their boundaries
 * Initial support for dev extension
+* Fix for propagating config for widget width/height and spacing
 
 
 ## 0.0.5
