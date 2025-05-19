@@ -1,5 +1,11 @@
 ## 0.0.5
 
+* Allow dragging widgets inside their boundaries
+* Initial support for dev extension
+
+
+## 0.0.5
+
 * It is possible now specify size of the widget and spacing between them
 * Default constants for width/height/spacing is exported
 
