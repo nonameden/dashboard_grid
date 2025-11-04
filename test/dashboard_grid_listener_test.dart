@@ -125,7 +125,10 @@ void main() {
         [DashboardGridChangeSnapshot(from: null, to: widget1)],
         [
           DashboardGridChangeSnapshot(from: null, to: widget2),
-          DashboardGridChangeSnapshot(from: widget1, to: widget1.copyWith(x: 1)),
+          DashboardGridChangeSnapshot(
+            from: widget1,
+            to: widget1.copyWith(x: 1),
+          ),
         ],
       ]),
     );
@@ -159,7 +162,7 @@ void main() {
     );
 
     final controller =
-    StreamController<Iterable<DashboardGridChangeSnapshot>>();
+        StreamController<Iterable<DashboardGridChangeSnapshot>>();
     expectLater(
       controller.stream,
       emitsInOrder([

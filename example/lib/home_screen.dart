@@ -127,17 +127,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context) {
                       var themeData = Theme.of(context);
                       return Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: themeData.colorScheme.primary),
-                        borderRadius: BorderRadius.circular(10),
-                        color: themeData.colorScheme.primaryContainer,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Widget $id',
-                        style: themeData.textTheme.titleSmall,
-                      ),
-                    );
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: themeData.colorScheme.primary),
+                          borderRadius: BorderRadius.circular(10),
+                          color: themeData.colorScheme.primaryContainer,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Widget $id',
+                          style: themeData.textTheme.titleSmall,
+                        ),
+                      );
                     },
                   ),
                 );

@@ -4,11 +4,13 @@ import 'dart:developer';
 import '../dashboard_grid.dart';
 
 class DevToolsController {
-
   final List<DashboardState> _states = [];
 
   DevToolsController._() {
-    registerExtension('ext.dashboard_grid.getConfig', (method, parameters) async {
+    registerExtension('ext.dashboard_grid.getConfig', (
+      method,
+      parameters,
+    ) async {
       final data = _getConfig();
 
       return ServiceExtensionResponse.result(jsonEncode(data));
@@ -39,24 +41,24 @@ class DevToolsController {
   }
 
   Map<String, dynamic> _getConfig() {
-    final data = _states.map((s) => s.widget.config).map((config) {
-      return {
-        'maxColumns': config.maxColumns,
-        'currentHeight': config.currentHeight,
-        'widgets': config.widgets.map((w) {
+    final data =
+        _states.map((s) => s.widget.config).map((config) {
           return {
-            'id': w.id,
-            'x': w.x,
-            'y': w.y,
-            'width': w.width,
-            'height': w.height,
+            'maxColumns': config.maxColumns,
+            'currentHeight': config.currentHeight,
+            'widgets':
+                config.widgets.map((w) {
+                  return {
+                    'id': w.id,
+                    'x': w.x,
+                    'y': w.y,
+                    'width': w.width,
+                    'height': w.height,
+                  };
+                }).toList(),
           };
-        }).toList(),
-      };
-    }).toList();
+        }).toList();
 
-    return {
-      'grids': data,
-    };
+    return {'grids': data};
   }
 }

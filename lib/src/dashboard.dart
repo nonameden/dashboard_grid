@@ -10,7 +10,9 @@ import 'table/table.dart';
 import 'table/table_cell.dart';
 import 'table/table_cell_decoration.dart';
 
+/// A widget that displays a grid of widgets that can be rearranged by dragging and dropping.
 class Dashboard extends StatefulWidget {
+  /// Creates a dashboard.
   const Dashboard({
     super.key,
     this.editMode = false,
@@ -21,11 +23,24 @@ class Dashboard extends StatefulWidget {
     this.cellPreviewDecoration = const TableCellDecoration(),
   });
 
+  /// Whether the dashboard is in edit mode.
+  ///
+  /// When in edit mode, widgets can be rearranged by dragging and dropping.
   final bool editMode;
+
+  /// The configuration of the dashboard.
   final DashboardGrid config;
+
+  /// The width of each widget in the dashboard.
   final double widgetWidth;
+
+  /// The height of each widget in the dashboard.
   final double widgetHeight;
+
+  /// The spacing between widgets in the dashboard.
   final double widgetSpacing;
+
+  /// The decoration for the cell preview when dragging a widget.
   final TableCellDecoration cellPreviewDecoration;
 
   @override
@@ -57,6 +72,46 @@ class DashboardState extends State<Dashboard> {
   }
 
   void _configListener() {
+    setState(() {});
+  }
+
+  Offset? _dragStartLocalPosition;
+
+  void _onDrop(DashboardWidget item, TableVicinity vicinity) {
+    final localPos = _dragStartLocalPosition;
+    _dragStartLocalPosition = null;
+
+    if (localPos != null) {
+      final cellWidth = widget.widgetWidth + widget.widgetSpacing;
+      final cellHeight = widget.widgetHeight + widget.widgetSpacing;
+
+      final xOffset = (localPos.dx / cellWidth).floor();
+      final yOffset = (localPos.dy / cellHeight).floor();
+
+      try {
+        widget.config.moveWidget(
+          item.id,
+          x: vicinity.xIndex - xOffset,
+          y: vicinity.yIndex - yOffset,
+        );
+      } on NotEnoughSpaceException {
+        // Oops
+      } catch (e) {
+        rethrow;
+      }
+    } else {
+      try {
+        widget.config.moveWidget(
+          item.id,
+          x: vicinity.xIndex,
+          y: vicinity.yIndex,
+        );
+      } on NotEnoughSpaceException {
+        // Oops
+      } catch (e) {
+        rethrow;
+      }
+    }
     setState(() {});
   }
 
@@ -116,19 +171,7 @@ class DashboardState extends State<Dashboard> {
                       return Container();
                     },
                     onAcceptWithDetails: (details) {
-                      try {
-                        widget.config.moveWidget(
-                          details.data.id,
-                          x: vicinity.xIndex,
-                          y: vicinity.yIndex,
-                        );
-                      } on NotEnoughSpaceException {
-                        // Oops
-                      } catch (e) {
-                        rethrow;
-                      }
-
-                      setState(() {});
+                      _onDrop(details.data, vicinity);
                     },
                   ),
                 );
@@ -164,81 +207,55 @@ class DashboardState extends State<Dashboard> {
 
     final child =
         widget.editMode
-            ? Draggable(
-              data: config,
-              feedback: Builder(
-                builder: (context) {
-                  return ConstrainedBox(
-                    constraints: constraints,
-                    child: config.builder(context),
-                  );
-                },
-              ),
-              childWhenDragging: Builder(
-                builder: (context) {
-                  return DragTarget<DashboardWidget>(
-                    builder: (context, candidate, rejected) {
-                      return Opacity(
-                        opacity: 0.5,
-                        child: ConstrainedBox(
-                          constraints: constraints,
-                          child: config.builder(context),
-                        ),
-                      );
-                    },
-                    onAcceptWithDetails: (details) {
-                      // Move inside the same widget
-                      final offset = details.offset;
-                      // Translate to indexes
-                      final ix =
-                          offset.dx /
-                          (widget.widgetWidth +
-                              widget.widgetSpacing / (config.width - 1));
-                      final iy =
-                          offset.dy /
-                          (widget.widgetHeight +
-                              widget.widgetSpacing / (config.height - 1));
-
-                      try {
-                        widget.config.moveWidget(
-                          details.data.id,
-                          x: vicinity.xIndex + ix.floor(),
-                          y: vicinity.yIndex + iy.floor(),
-                        );
-
-                        setState(() {});
-                      } on NotEnoughSpaceException {
-                        // Oops
-                      } catch (e) {
-                        rethrow;
-                      }
-                    },
-                  );
-                },
-              ),
-              child: DragTarget<DashboardWidget>(
-                builder: (context, candidate, rejected) {
-                  return config.builder(context);
-                },
-                onAcceptWithDetails: (details) {
-                  try {
-                    widget.config.moveWidget(
-                      details.data.id,
-                      x: vicinity.xIndex,
-                      y: vicinity.yIndex,
-                    );
-
-                    setState(() {});
-                  } on NotEnoughSpaceException {
-                    // Oops
-                  } catch (e) {
-                    rethrow;
-                  }
-                },
-              ),
-              onDragUpdate: (details) {
-                // Update details
+            ? Listener(
+              onPointerDown: (event) {
+                _dragStartLocalPosition = event.localPosition;
               },
+              child: Draggable(
+                data: config,
+                onDragEnd: (details) {
+                  setState(() {
+                    _dragStartLocalPosition = null;
+                  });
+                },
+                feedback: Builder(
+                  builder: (context) {
+                    return ConstrainedBox(
+                      constraints: constraints,
+                      child: config.builder(context),
+                    );
+                  },
+                ),
+                childWhenDragging: Builder(
+                  builder: (context) {
+                    return DragTarget<DashboardWidget>(
+                      builder: (context, candidate, rejected) {
+                        return Opacity(
+                          opacity: 0.5,
+                          child: ConstrainedBox(
+                            constraints: constraints,
+                            child: config.builder(context),
+                          ),
+                        );
+                      },
+                      onAcceptWithDetails: (details) {
+                        _onDrop(details.data, vicinity);
+                      },
+                    );
+                  },
+                ),
+                child: DragTarget<DashboardWidget>(
+                  builder: (context, candidate, rejected) {
+                    return config.builder(context);
+                  },
+                  onAcceptWithDetails: (details) {
+                    _onDrop(details.data, vicinity);
+                  },
+                ),
+                onDragUpdate: (details) {
+                  // Update details
+                },
+              ),
             )
             : config.builder(context);
 

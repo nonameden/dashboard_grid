@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 
+/// A widget to be displayed in the dashboard.
 class DashboardWidget {
+  /// A unique identifier for the widget.
   final String id;
+
+  /// The x coordinate of the widget in the dashboard.
   final int x;
+
+  /// The y coordinate of the widget in the dashboard.
   final int y;
+
+  /// The width of the widget in the dashboard.
   final int width;
+
+  /// The height of the widget in the dashboard.
   final int height;
+
+  /// A builder for the widget.
   final WidgetBuilder builder;
 
+  /// Creates a dashboard widget.
   DashboardWidget({
     required this.id,
     required this.x,
@@ -17,6 +30,7 @@ class DashboardWidget {
     required this.builder,
   }) : assert(width > 0 && height > 0);
 
+  /// Creates a copy of this dashboard widget with the given fields replaced with the new values.
   DashboardWidget copyWith({
     int? x,
     int? y,

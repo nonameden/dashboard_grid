@@ -49,8 +49,8 @@ void main() {
   });
 
   testWidgets('should be able to display 2x1 widget on dashboard', (
-      tester,
-      ) async {
+    tester,
+  ) async {
     // Arrange
     final config = DashboardGrid(maxColumns: 2);
     config.addWidget(

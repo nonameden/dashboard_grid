@@ -1324,7 +1324,8 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
           continue;
         }
 
-        Offset paintOffset = cellParentData.paintOffset ??
+        Offset paintOffset =
+            cellParentData.paintOffset ??
             Offset(
               columnConfig.configuration.padding.leading,
               rowConfig.configuration.padding.leading,
@@ -1334,8 +1335,15 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
         final int firstRow = cellParentData.rowMergeStart ?? row;
 
         paintOffset += Offset(
-          cellParentData.columnMergeSpan != 0 ? (columnConfig.extent + columnConfig.configuration.padding.leading) * (column - firstColumn) : 0,
-          cellParentData.rowMergeSpan != 0 ? (rowConfig.extent + rowConfig.configuration.padding.leading) * (row - firstRow) : 0,
+          cellParentData.columnMergeSpan != 0
+              ? (columnConfig.extent +
+                      columnConfig.configuration.padding.leading) *
+                  (column - firstColumn)
+              : 0,
+          cellParentData.rowMergeSpan != 0
+              ? (rowConfig.extent + rowConfig.configuration.padding.leading) *
+                  (row - firstRow)
+              : 0,
         );
 
         final lt = paintOffset + offset;

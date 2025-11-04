@@ -5,13 +5,19 @@ import 'package:flutter/foundation.dart';
 
 import 'dashboard_widget.dart';
 
+/// A snapshot of a change in the dashboard grid.
 class DashboardGridChangeSnapshot {
+  /// Creates a snapshot of a change in the dashboard grid.
   DashboardGridChangeSnapshot({required this.from, required this.to})
-    : assert(from != null || to != null, 'Either from or to must be not null');
+      : assert(from != null || to != null, 'Either from or to must be not null');
 
+  /// The widget before the change.
   final DashboardWidget? from;
+
+  /// The widget after the change.
   final DashboardWidget? to;
 
+  /// The id of the widget that changed.
   String get widgetId => from?.id ?? to?.id ?? '';
 
   @override
@@ -31,29 +37,41 @@ class DashboardGridChangeSnapshot {
   }
 }
 
+/// A listener for changes in the dashboard grid.
 typedef DashboardGridChangeListener =
     void Function(Iterable<DashboardGridChangeSnapshot> changes);
 
+/// A class that manages the state of the dashboard grid.
 class DashboardGrid with ChangeNotifier {
+  /// Creates a dashboard grid.
   DashboardGrid({
     required this.maxColumns,
     this.currentHeight = 1,
     this.listener,
   });
 
+  /// The maximum number of columns in the dashboard.
   final int maxColumns;
+
+  /// The current height of the dashboard.
   int currentHeight;
+
+  /// A listener for changes in the dashboard grid.
   DashboardGridChangeListener? listener;
   List<DashboardWidget> _widgets = [];
 
+  /// The number of widgets in the dashboard.
   int get size => _widgets.length;
 
+  /// The widgets in the dashboard.
   Iterable<DashboardWidget> get widgets => [..._widgets];
 
+  /// Returns the widget at the given coordinates.
   DashboardWidget? getWidgetAt({required int x, required int y}) {
     return _getWidgetAt(_widgets, x, y);
   }
 
+  /// Moves a widget to the given coordinates.
   void moveWidget(String widgetId, {required int x, required int y}) {
     DashboardWidget? widget;
     try {
@@ -67,6 +85,7 @@ class DashboardGrid with ChangeNotifier {
     }
   }
 
+  /// Adds a widget to the dashboard.
   void addWidget(DashboardWidget widget) {
     final backUp = copy();
 
@@ -95,6 +114,7 @@ class DashboardGrid with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Removes a widget from the dashboard.
   void removeWidget(DashboardWidget widget) {
     final backUp = copy();
     final result =
@@ -241,6 +261,7 @@ class DashboardGrid with ChangeNotifier {
     }
   }
 
+  /// Creates a copy of this dashboard grid.
   DashboardGrid copy() {
     return DashboardGrid(maxColumns: maxColumns, currentHeight: currentHeight)
       .._widgets = _widgets.map((e) => e.copyWith()).toList();
@@ -260,6 +281,8 @@ class DashboardGrid with ChangeNotifier {
       Object.hash(maxColumns, currentHeight, listener, _widgets);
 }
 
+/// An exception that is thrown when there is not enough space to add a widget to the dashboard.
 class NotEnoughSpaceException implements Exception {
+  /// Creates a [NotEnoughSpaceException].
   NotEnoughSpaceException();
 }
