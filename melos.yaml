@@ -1,0 +1,12 @@
+
+name: dashboard_grid
+
+packages:
+  - .
+  - example
+  - dashboard_grid_devtools_extension
+
+scripts:
+  pub_get:
+    run: melos exec -- "flutter pub get"
+    description: Run flutter pub get in all packages.
