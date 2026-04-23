@@ -104,14 +104,7 @@ class DashboardGrid with ChangeNotifier {
       return a.y.compareTo(b.y);
     });
 
-    _widgets = result;
-    _updateHeightIfNeed();
-
-    if (listener != null) {
-      final changes = _findDifference(backUp._widgets, result);
-      listener!(changes);
-    }
-    notifyListeners();
+    _commitState(result, backUp);
   }
 
   /// Removes a widget from the dashboard.
@@ -120,11 +113,15 @@ class DashboardGrid with ChangeNotifier {
     final result =
         _widgets.where((element) => element.id != widget.id).toList();
 
-    _widgets = result;
+    _commitState(result, backUp);
+  }
+
+  void _commitState(List<DashboardWidget> newWidgets, DashboardGrid backUp) {
+    _widgets = newWidgets;
     _updateHeightIfNeed();
 
     if (listener != null) {
-      final changes = _findDifference(backUp._widgets, result);
+      final changes = _findDifference(backUp._widgets, newWidgets);
       listener!(changes);
     }
     notifyListeners();
