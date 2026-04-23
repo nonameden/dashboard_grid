@@ -1,3 +1,21 @@
+## v0.0.7
+
+- feat: rewrite create-release.yml to use OIDC for pub.dev publish (#18)
+- perf: optimize point-in-rectangle overlap check (#13)
+- 🧪 test general exception on widget move (#14)
+- 🧪 testing improvement: add missing edge case test for DashboardGridChangeSnapshot (#15)
+- test: add tests for DashboardWidget.copyWith (#12)
+- Refactor: Extract common state update logic in DashboardGrid (#10)
+- perf: Optimize _findDifference by reducing O(N^2) list searches to O(N) with Map (#11)
+- test: Add tests for TableCellDecoration (#9)
+- perf: optimize O(N^2) list difference calculation in DashboardGrid (#8)
+- test: add tests for TableCellDelegate property setters (#7)
+- Fix: Use env context instead of secrets in GitHub Actions if condition (#6)
+- ⚡ Optimize Map key lookup to constant time in layout table (#5)
+- feat: Add GitHub Actions workflow for creating releases and updating CHANGELOG
+- docs: Add missing documentation to public APIs
+- Add documentation files for WARP and Gemini code assistant context (#4)
+
 ## 0.0.5
 
 * Allow dragging widgets inside their boundaries
