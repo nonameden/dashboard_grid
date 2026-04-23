@@ -941,7 +941,7 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
 
         final TableVicinity vicinity = TableVicinity(column: column, row: row);
         final RenderBox? cell =
-            _mergedVicinities.keys.contains(vicinity)
+            _mergedVicinities.containsKey(vicinity)
                 ? null
                 : buildOrObtainChildFor(vicinity);
 
@@ -1280,7 +1280,7 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
     // the full area. Returns the child that has been laid out to span the given
     // vicinity.
     assert(
-      _mergedVicinities.keys.contains(vicinity),
+      _mergedVicinities.containsKey(vicinity),
       'The vicinity $vicinity is not accounted for as covered by a merged cell.',
     );
     final TableVicinity mergedVicinity = _mergedVicinities[vicinity]!;
@@ -1397,7 +1397,7 @@ class RenderTableViewport extends RenderTwoDimensionalViewport {
         if (cell == null) {
           // Covered by a merged cell
           assert(
-            _mergedVicinities.keys.contains(vicinity),
+            _mergedVicinities.containsKey(vicinity),
             'TableViewCell for $vicinity could not be found. If merging '
             'cells, the same TableViewCell must be returned for every '
             'TableVicinity that is contained in the merged area of the '

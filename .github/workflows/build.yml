@@ -23,6 +23,7 @@ jobs:
             flutter pub get
             flutter test --machine --coverage > tests.output
       - name: SonarQube Scan
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
