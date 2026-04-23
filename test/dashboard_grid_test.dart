@@ -271,4 +271,13 @@ void main() {
     expect(result!.x, 1);
     expect(result.y, 1);
   });
+  test(
+    'DashboardGridChangeSnapshot with both from and to as null should throw AssertionError',
+    () {
+      expect(
+        () => DashboardGridChangeSnapshot(from: null, to: null),
+        throwsA(isA<AssertionError>()),
+      );
+    },
+  );
 }
