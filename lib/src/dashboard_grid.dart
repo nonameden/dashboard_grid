@@ -195,13 +195,20 @@ class DashboardGrid with ChangeNotifier {
     List<DashboardWidget> base,
     DashboardWidget widget,
   ) {
-    for (var x = widget.x; x < widget.x + widget.width; x++) {
-      for (var y = widget.y; y < widget.y + widget.height; y++) {
-        final widget = _getWidgetAt(base, x, y);
-        if (widget != null) {
-          _debug('Overlap widget: $widget');
-          return widget;
-        }
+    final minX = widget.x;
+    final maxX = minX + widget.width;
+    final minY = widget.y;
+    final maxY = minY + widget.height;
+
+    for (final baseWidget in base) {
+      final baseMinX = baseWidget.x;
+      final baseMaxX = baseMinX + baseWidget.width;
+      final baseMinY = baseWidget.y;
+      final baseMaxY = baseMinY + baseWidget.height;
+
+      if (minX < baseMaxX && maxX > baseMinX && minY < baseMaxY && maxY > baseMinY) {
+        _debug('Overlap widget: $baseWidget');
+        return baseWidget;
       }
     }
 
