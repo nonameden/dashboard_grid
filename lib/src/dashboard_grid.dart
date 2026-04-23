@@ -9,7 +9,7 @@ import 'dashboard_widget.dart';
 class DashboardGridChangeSnapshot {
   /// Creates a snapshot of a change in the dashboard grid.
   DashboardGridChangeSnapshot({required this.from, required this.to})
-      : assert(from != null || to != null, 'Either from or to must be not null');
+    : assert(from != null || to != null, 'Either from or to must be not null');
 
   /// The widget before the change.
   final DashboardWidget? from;

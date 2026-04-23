@@ -1,25 +1,57 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:developer' as developer;
+
+import 'package:meta/meta.dart';
 
 import '../dashboard_grid.dart';
 
+@visibleForTesting
+typedef RegisterExtensionCallback =
+    void Function(
+      String name,
+      Future<developer.ServiceExtensionResponse> Function(
+        String method,
+        Map<String, String> parameters,
+      )
+      handler,
+    );
+
+@visibleForTesting
+typedef PostEventCallback =
+    void Function(String eventKind, Map<String, dynamic> eventData);
+
 class DevToolsController {
+  @visibleForTesting
+  static RegisterExtensionCallback registerExtension =
+      developer.registerExtension;
+
+  @visibleForTesting
+  static PostEventCallback postEvent = developer.postEvent;
+
   final List<DashboardState> _states = [];
 
-  DevToolsController._() {
-    registerExtension('ext.dashboard_grid.getConfig', (
-      method,
-      parameters,
-    ) async {
-      final data = _getConfig();
-
-      return ServiceExtensionResponse.result(jsonEncode(data));
-    });
-  }
+  DevToolsController._();
 
   static final _instance = DevToolsController._();
 
+  static bool _extensionRegistered = false;
+
+  static void _ensureExtensionRegistered() {
+    if (!_extensionRegistered) {
+      registerExtension('ext.dashboard_grid.getConfig', (
+        method,
+        parameters,
+      ) async {
+        final data = _instance._getConfig();
+
+        return developer.ServiceExtensionResponse.result(jsonEncode(data));
+      });
+      _extensionRegistered = true;
+    }
+  }
+
   static void registerInDevTools(DashboardState state) {
+    _ensureExtensionRegistered();
     _instance._states.add(state);
     state.widget.config.addListener(_instance._configChangeListener);
   }
@@ -29,14 +61,23 @@ class DevToolsController {
     state.widget.config.removeListener(_instance._configChangeListener);
   }
 
+  @visibleForTesting
+  static void clearStates() {
+    for (final state in _instance._states) {
+      state.widget.config.removeListener(_instance._configChangeListener);
+    }
+    _instance._states.clear();
+    _extensionRegistered = false;
+  }
+
   void _configChangeListener() {
     final data = _getConfig();
 
     try {
       postEvent('ext.dashboard_grid.configUpdate', data);
-      log('Posting DashboardGrid config change');
+      developer.log('Posting DashboardGrid config change');
     } catch (e) {
-      log('Error posting DashboardGrid config change: $e');
+      developer.log('Error posting DashboardGrid config change: $e');
     }
   }
 

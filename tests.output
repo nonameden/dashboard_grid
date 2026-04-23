@@ -1,0 +1,242 @@
+Resolving dependencies...
+Downloading packages...
+  cli_util 0.4.2 (0.5.0 available)
+  matcher 0.12.18 (0.12.19 available)
+  meta 1.17.0 (1.18.2 available)
+  test_api 0.7.9 (0.7.11 available)
+  vector_math 2.2.0 (2.3.0 available)
+Got dependencies!
+5 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Resolving dependencies in `./example`...
+Downloading packages...
+Got dependencies in `./example`.
+{"protocolVersion":"0.1.1","runnerVersion":null,"pid":71188,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"/app/test/src/table/table_cell_decoration_test.dart"},"type":"suite","time":0}
+{"test":{"id":1,"name":"loading /app/test/src/table/table_cell_decoration_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":2}
+{"suite":{"id":2,"platform":"vm","path":"/app/test/dashboard_grid_widget_test.dart"},"type":"suite","time":10}
+{"test":{"id":3,"name":"loading /app/test/dashboard_grid_widget_test.dart","suiteID":2,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":11}
+{"count":8,"time":12,"type":"allSuites"}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":"http://127.0.0.1:42385/63A0OW4UqXQ=/"}}]
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":2468}
+{"group":{"id":4,"suiteID":0,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":3,"line":null,"column":null,"url":null},"type":"group","time":2475}
+{"group":{"id":5,"suiteID":0,"parentID":4,"name":"TableCellDecoration","metadata":{"skip":false,"skipReason":null},"testCount":3,"line":37,"column":3,"url":"file:///app/test/src/table/table_cell_decoration_test.dart"},"type":"group","time":2477}
+{"test":{"id":6,"name":"TableCellDecoration default constructor provides default decoration","suiteID":0,"groupIDs":[4,5],"metadata":{"skip":false,"skipReason":null},"line":38,"column":5,"url":"file:///app/test/src/table/table_cell_decoration_test.dart"},"type":"testStart","time":2477}
+{"testID":6,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":2517}
+{"test":{"id":7,"name":"TableCellDecoration paint uses decoration to paint correctly","suiteID":0,"groupIDs":[4,5],"metadata":{"skip":false,"skipReason":null},"line":50,"column":5,"url":"file:///app/test/src/table/table_cell_decoration_test.dart"},"type":"testStart","time":2522}
+{"testID":7,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":2532}
+{"test":{"id":8,"name":"TableCellDecoration equality and hashCode","suiteID":0,"groupIDs":[4,5],"metadata":{"skip":false,"skipReason":null},"line":67,"column":5,"url":"file:///app/test/src/table/table_cell_decoration_test.dart"},"type":"testStart","time":2533}
+{"testID":8,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":2545}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":"http://127.0.0.1:34475/Ki2IA3RtWj0=/"}}]
+{"testID":3,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":3017}
+{"group":{"id":9,"suiteID":2,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":3,"line":null,"column":null,"url":null},"type":"group","time":3018}
+{"test":{"id":10,"name":"should be able to display empty dashboard","suiteID":2,"groupIDs":[9],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":6,"root_column":3,"root_url":"file:///app/test/dashboard_grid_widget_test.dart"},"type":"testStart","time":3018}
+{"suite":{"id":11,"platform":"vm","path":"/app/test/dev_tools_controller_test.dart"},"type":"suite","time":3442}
+{"test":{"id":12,"name":"loading /app/test/dev_tools_controller_test.dart","suiteID":11,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":3442}
+{"testID":10,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4010}
+{"test":{"id":13,"name":"should be able to display 1x1 widget on dashboard","suiteID":2,"groupIDs":[9],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":21,"root_column":3,"root_url":"file:///app/test/dashboard_grid_widget_test.dart"},"type":"testStart","time":4013}
+{"testID":13,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":4054}
+{"testID":13,"messageType":"print","message":"Nothing to shift","type":"print","time":4055}
+{"testID":13,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4135}
+{"test":{"id":14,"name":"should be able to display 2x1 widget on dashboard","suiteID":2,"groupIDs":[9],"metadata":{"skip":false,"skipReason":null},"line":174,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":51,"root_column":3,"root_url":"file:///app/test/dashboard_grid_widget_test.dart"},"type":"testStart","time":4136}
+{"testID":14,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 2, height: 1}","type":"print","time":4145}
+{"testID":14,"messageType":"print","message":"Nothing to shift","type":"print","time":4145}
+{"testID":14,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4200}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":"http://127.0.0.1:37351/QkCwE_giRzE=/"}}]
+{"testID":12,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":4516}
+{"group":{"id":15,"suiteID":11,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":5,"line":null,"column":null,"url":null},"type":"group","time":4517}
+{"group":{"id":16,"suiteID":11,"parentID":15,"name":"DevToolsController","metadata":{"skip":false,"skipReason":null},"testCount":5,"line":29,"column":3,"url":"file:///app/test/dev_tools_controller_test.dart"},"type":"group","time":4517}
+{"test":{"id":17,"name":"DevToolsController should register ext.dashboard_grid.getConfig extension on creation","suiteID":11,"groupIDs":[15,16],"metadata":{"skip":false,"skipReason":null},"line":61,"column":5,"url":"file:///app/test/dev_tools_controller_test.dart"},"type":"testStart","time":4517}
+{"testID":17,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4587}
+{"test":{"id":18,"name":"DevToolsController getConfig extension should return current config","suiteID":11,"groupIDs":[15,16],"metadata":{"skip":false,"skipReason":null},"line":75,"column":5,"url":"file:///app/test/dev_tools_controller_test.dart"},"type":"testStart","time":4587}
+{"testID":18,"messageType":"print","message":"No overlap widget for: {id: w1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":4605}
+{"testID":18,"messageType":"print","message":"Nothing to shift","type":"print","time":4606}
+{"testID":18,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4614}
+{"test":{"id":19,"name":"DevToolsController should postEvent when config changes","suiteID":11,"groupIDs":[15,16],"metadata":{"skip":false,"skipReason":null},"line":110,"column":5,"url":"file:///app/test/dev_tools_controller_test.dart"},"type":"testStart","time":4615}
+{"testID":19,"messageType":"print","message":"No overlap widget for: {id: w1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":4619}
+{"testID":19,"messageType":"print","message":"Nothing to shift","type":"print","time":4620}
+{"testID":19,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4625}
+{"test":{"id":20,"name":"DevToolsController should stop posting events when unregistered","suiteID":11,"groupIDs":[15,16],"metadata":{"skip":false,"skipReason":null},"line":141,"column":5,"url":"file:///app/test/dev_tools_controller_test.dart"},"type":"testStart","time":4625}
+{"testID":20,"messageType":"print","message":"No overlap widget for: {id: w1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":4629}
+{"testID":20,"messageType":"print","message":"Nothing to shift","type":"print","time":4629}
+{"testID":20,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4630}
+{"test":{"id":21,"name":"DevToolsController clearStates should stop all listeners","suiteID":11,"groupIDs":[15,16],"metadata":{"skip":false,"skipReason":null},"line":162,"column":5,"url":"file:///app/test/dev_tools_controller_test.dart"},"type":"testStart","time":4631}
+{"testID":21,"messageType":"print","message":"No overlap widget for: {id: w1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":4634}
+{"testID":21,"messageType":"print","message":"Nothing to shift","type":"print","time":4635}
+{"testID":21,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":4635}
+{"suite":{"id":22,"platform":"vm","path":"/app/test/dashboard_grid_listener_test.dart"},"type":"suite","time":4949}
+{"test":{"id":23,"name":"loading /app/test/dashboard_grid_listener_test.dart","suiteID":22,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":4949}
+{"suite":{"id":24,"platform":"vm","path":"/app/test/benchmark_test.dart"},"type":"suite","time":5502}
+{"test":{"id":25,"name":"loading /app/test/benchmark_test.dart","suiteID":24,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":5502}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":"http://127.0.0.1:44247/ueJvYtdAgaU=/"}}]
+{"testID":23,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":5979}
+{"group":{"id":26,"suiteID":22,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":5,"line":null,"column":null,"url":null},"type":"group","time":5980}
+{"test":{"id":27,"name":"should notify when widget placed","suiteID":22,"groupIDs":[26],"metadata":{"skip":false,"skipReason":null},"line":8,"column":3,"url":"file:///app/test/dashboard_grid_listener_test.dart"},"type":"testStart","time":5980}
+{"testID":27,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":6066}
+{"testID":27,"messageType":"print","message":"Nothing to shift","type":"print","time":6066}
+{"testID":27,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6091}
+{"test":{"id":28,"name":"should notify when widget removed","suiteID":22,"groupIDs":[26],"metadata":{"skip":false,"skipReason":null},"line":34,"column":3,"url":"file:///app/test/dashboard_grid_listener_test.dart"},"type":"testStart","time":6092}
+{"testID":28,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":6102}
+{"testID":28,"messageType":"print","message":"Nothing to shift","type":"print","time":6102}
+{"testID":28,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6105}
+{"test":{"id":29,"name":"should notify when widget moved","suiteID":22,"groupIDs":[26],"metadata":{"skip":false,"skipReason":null},"line":64,"column":3,"url":"file:///app/test/dashboard_grid_listener_test.dart"},"type":"testStart","time":6106}
+{"testID":29,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":6111}
+{"testID":29,"messageType":"print","message":"Nothing to shift","type":"print","time":6111}
+{"testID":29,"messageType":"print","message":"No overlap widget for: {id: id1, x: 1, y: 0, width: 1, height: 1}","type":"print","time":6112}
+{"testID":29,"messageType":"print","message":"Nothing to shift","type":"print","time":6112}
+{"testID":29,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6114}
+{"test":{"id":30,"name":"should notify when one widget move another widget","suiteID":22,"groupIDs":[26],"metadata":{"skip":false,"skipReason":null},"line":102,"column":3,"url":"file:///app/test/dashboard_grid_listener_test.dart"},"type":"testStart","time":6115}
+{"testID":30,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":6122}
+{"testID":30,"messageType":"print","message":"Nothing to shift","type":"print","time":6122}
+{"testID":30,"messageType":"print","message":"Overlap widget: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":6122}
+{"testID":30,"messageType":"print","message":"Shifting: {id: id1, x: 0, y: 0, width: 1, height: 1} to {id: id1, x: 1, y: 0, width: 1, height: 1}","type":"print","time":6123}
+{"testID":30,"messageType":"print","message":"No overlap widget for: {id: id1, x: 1, y: 0, width: 1, height: 1}","type":"print","time":6123}
+{"testID":30,"messageType":"print","message":"Nothing to shift","type":"print","time":6123}
+{"testID":30,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6126}
+{"test":{"id":31,"name":"should notify when widget moved overlapping itself","suiteID":22,"groupIDs":[26],"metadata":{"skip":false,"skipReason":null},"line":146,"column":3,"url":"file:///app/test/dashboard_grid_listener_test.dart"},"type":"testStart","time":6128}
+{"testID":31,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 2, height: 2}","type":"print","time":6132}
+{"testID":31,"messageType":"print","message":"Nothing to shift","type":"print","time":6133}
+{"testID":31,"messageType":"print","message":"No overlap widget for: {id: id1, x: 1, y: 1, width: 2, height: 2}","type":"print","time":6134}
+{"testID":31,"messageType":"print","message":"Nothing to shift","type":"print","time":6135}
+{"testID":31,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6138}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":"http://127.0.0.1:37277/NUxfmJ9Juwk=/"}}]
+{"testID":25,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":6533}
+{"group":{"id":32,"suiteID":24,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":1,"line":null,"column":null,"url":null},"type":"group","time":6533}
+{"test":{"id":33,"name":"Benchmark O(N^2) list search vs Map","suiteID":24,"groupIDs":[32],"metadata":{"skip":false,"skipReason":null},"line":6,"column":3,"url":"file:///app/test/benchmark_test.dart"},"type":"testStart","time":6533}
+{"testID":33,"messageType":"print","message":"Baseline duration for O(N^2) list search: 232 ms","type":"print","time":6826}
+{"testID":33,"messageType":"print","message":"Optimized duration with Map: 10 ms","type":"print","time":6837}
+{"testID":33,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":6854}
+{"suite":{"id":34,"platform":"vm","path":"/app/test/dashboard_grid_test.dart"},"type":"suite","time":7053}
+{"test":{"id":35,"name":"loading /app/test/dashboard_grid_test.dart","suiteID":34,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":7053}
+{"suite":{"id":36,"platform":"vm","path":"/app/test/dashboard_notifier_test.dart"},"type":"suite","time":7681}
+{"test":{"id":37,"name":"loading /app/test/dashboard_notifier_test.dart","suiteID":36,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":7681}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":"http://127.0.0.1:46017/mGhyFY0YlMo=/"}}]
+{"testID":35,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":8277}
+{"group":{"id":38,"suiteID":34,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":12,"line":null,"column":null,"url":null},"type":"group","time":8280}
+{"test":{"id":39,"name":"should be able to create the dashboard config","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":41,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8280}
+{"testID":39,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":8319}
+{"testID":39,"messageType":"print","message":"Nothing to shift","type":"print","time":8320}
+{"testID":39,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8340}
+{"test":{"id":40,"name":"should resort widgets according to x -> y","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":51,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8340}
+{"testID":40,"messageType":"print","message":"No overlap widget for: {id: id4, x: 0, y: 1, width: 1, height: 1}","type":"print","time":8344}
+{"testID":40,"messageType":"print","message":"Nothing to shift","type":"print","time":8345}
+{"testID":40,"messageType":"print","message":"No overlap widget for: {id: id2, x: 1, y: 0, width: 1, height: 1}","type":"print","time":8346}
+{"testID":40,"messageType":"print","message":"Nothing to shift","type":"print","time":8348}
+{"testID":40,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":8348}
+{"testID":40,"messageType":"print","message":"Nothing to shift","type":"print","time":8348}
+{"testID":40,"messageType":"print","message":"No overlap widget for: {id: id3, x: 2, y: 0, width: 1, height: 1}","type":"print","time":8348}
+{"testID":40,"messageType":"print","message":"Nothing to shift","type":"print","time":8348}
+{"testID":40,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8351}
+{"test":{"id":41,"name":"get widget at [x,y] should return widget if present","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":64,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8351}
+{"testID":41,"messageType":"print","message":"No overlap widget for: {id: id4, x: 0, y: 1, width: 1, height: 1}","type":"print","time":8356}
+{"testID":41,"messageType":"print","message":"Nothing to shift","type":"print","time":8356}
+{"testID":41,"messageType":"print","message":"No overlap widget for: {id: id2, x: 1, y: 0, width: 1, height: 1}","type":"print","time":8356}
+{"testID":41,"messageType":"print","message":"Nothing to shift","type":"print","time":8356}
+{"testID":41,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":8356}
+{"testID":41,"messageType":"print","message":"Nothing to shift","type":"print","time":8357}
+{"testID":41,"messageType":"print","message":"No overlap widget for: {id: id3, x: 2, y: 0, width: 1, height: 1}","type":"print","time":8357}
+{"testID":41,"messageType":"print","message":"Nothing to shift","type":"print","time":8357}
+{"testID":41,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8357}
+{"test":{"id":42,"name":"get widget at [x,y] should return widget if present by point inside that widget","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":76,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8358}
+{"testID":42,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 2, height: 2}","type":"print","time":8361}
+{"testID":42,"messageType":"print","message":"Nothing to shift","type":"print","time":8361}
+{"testID":42,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8365}
+{"test":{"id":43,"name":"get widget at [x,y] should return null if no widget","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":103,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8365}
+{"testID":43,"messageType":"print","message":"No overlap widget for: {id: id4, x: 0, y: 1, width: 1, height: 1}","type":"print","time":8370}
+{"testID":43,"messageType":"print","message":"Nothing to shift","type":"print","time":8371}
+{"testID":43,"messageType":"print","message":"No overlap widget for: {id: id2, x: 1, y: 0, width: 1, height: 1}","type":"print","time":8371}
+{"testID":43,"messageType":"print","message":"Nothing to shift","type":"print","time":8371}
+{"testID":43,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8373}
+{"test":{"id":44,"name":"get widget at [x,y] should return widget when cords of the tail","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":113,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8373}
+{"testID":44,"messageType":"print","message":"No overlap widget for: {id: id0, x: 1, y: 0, width: 2, height: 1}","type":"print","time":8377}
+{"testID":44,"messageType":"print","message":"Nothing to shift","type":"print","time":8377}
+{"testID":44,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8379}
+{"test":{"id":45,"name":"should resize widget if width is bigger than dashboard","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":130,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8380}
+{"testID":45,"messageType":"print","message":"No overlap widget for: {id: id0, x: 0, y: 0, width: 3, height: 1}","type":"print","time":8384}
+{"testID":45,"messageType":"print","message":"Nothing to shift","type":"print","time":8384}
+{"testID":45,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8385}
+{"test":{"id":46,"name":"should shift widget if new widget overlaps with existing","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":149,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8385}
+{"testID":46,"messageType":"print","message":"No overlap widget for: {id: id0, x: 0, y: 0, width: 1, height: 1}","type":"print","time":8388}
+{"testID":46,"messageType":"print","message":"Nothing to shift","type":"print","time":8389}
+{"testID":46,"messageType":"print","message":"Overlap widget: {id: id0, x: 0, y: 0, width: 1, height: 1}","type":"print","time":8389}
+{"testID":46,"messageType":"print","message":"Shifting: {id: id0, x: 0, y: 0, width: 1, height: 1} to {id: id0, x: 1, y: 0, width: 1, height: 1}","type":"print","time":8389}
+{"testID":46,"messageType":"print","message":"No overlap widget for: {id: id0, x: 1, y: 0, width: 1, height: 1}","type":"print","time":8390}
+{"testID":46,"messageType":"print","message":"Nothing to shift","type":"print","time":8390}
+{"testID":46,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8390}
+{"test":{"id":47,"name":"should shift widget down if not enough space on the right","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":177,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8390}
+{"testID":47,"messageType":"print","message":"No overlap widget for: {id: id0, x: 0, y: 0, width: 3, height: 1}","type":"print","time":8394}
+{"testID":47,"messageType":"print","message":"Nothing to shift","type":"print","time":8394}
+{"testID":47,"messageType":"print","message":"Overlap widget: {id: id0, x: 0, y: 0, width: 3, height: 1}","type":"print","time":8395}
+{"testID":47,"messageType":"print","message":"Shifting: {id: id0, x: 0, y: 0, width: 3, height: 1} to {id: id0, x: 0, y: 1, width: 3, height: 1}","type":"print","time":8395}
+{"testID":47,"messageType":"print","message":"No overlap widget for: {id: id0, x: 0, y: 1, width: 3, height: 1}","type":"print","time":8395}
+{"testID":47,"messageType":"print","message":"Nothing to shift","type":"print","time":8395}
+{"testID":47,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8396}
+{"test":{"id":48,"name":"should shift widget and put to next available slot if not enough space","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":206,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8396}
+{"testID":48,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8405}
+{"test":{"id":49,"name":"Removing widget should free up space","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":227,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8406}
+{"testID":49,"messageType":"print","message":"No overlap widget for: {id: id0, x: 1, y: 0, width: 1, height: 1}","type":"print","time":8409}
+{"testID":49,"messageType":"print","message":"Nothing to shift","type":"print","time":8409}
+{"testID":49,"messageType":"print","message":"No overlap widget for: {id: id1, x: 1, y: 1, width: 1, height: 1}","type":"print","time":8409}
+{"testID":49,"messageType":"print","message":"Nothing to shift","type":"print","time":8409}
+{"testID":49,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":8410}
+{"testID":49,"messageType":"print","message":"Nothing to shift","type":"print","time":8410}
+{"testID":49,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8411}
+{"test":{"id":50,"name":"Relocating widget in self occupied space should be allowed","suiteID":34,"groupIDs":[38],"metadata":{"skip":false,"skipReason":null},"line":255,"column":3,"url":"file:///app/test/dashboard_grid_test.dart"},"type":"testStart","time":8411}
+{"testID":50,"messageType":"print","message":"No overlap widget for: {id: id0, x: 0, y: 0, width: 2, height: 2}","type":"print","time":8415}
+{"testID":50,"messageType":"print","message":"Nothing to shift","type":"print","time":8415}
+{"testID":50,"messageType":"print","message":"No overlap widget for: {id: id0, x: 1, y: 1, width: 2, height: 2}","type":"print","time":8415}
+{"testID":50,"messageType":"print","message":"Nothing to shift","type":"print","time":8415}
+{"testID":50,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8416}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":"http://127.0.0.1:45949/KdFgztp6gNo=/"}}]
+{"testID":37,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":8720}
+{"group":{"id":51,"suiteID":36,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":4,"line":null,"column":null,"url":null},"type":"group","time":8720}
+{"test":{"id":52,"name":"should notify when widget added","suiteID":36,"groupIDs":[51],"metadata":{"skip":false,"skipReason":null},"line":6,"column":3,"url":"file:///app/test/dashboard_notifier_test.dart"},"type":"testStart","time":8720}
+{"testID":52,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":8765}
+{"testID":52,"messageType":"print","message":"Nothing to shift","type":"print","time":8770}
+{"testID":52,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8777}
+{"test":{"id":53,"name":"should notify when widget moved","suiteID":36,"groupIDs":[51],"metadata":{"skip":false,"skipReason":null},"line":28,"column":3,"url":"file:///app/test/dashboard_notifier_test.dart"},"type":"testStart","time":8777}
+{"testID":53,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 1, height: 1}","type":"print","time":8781}
+{"testID":53,"messageType":"print","message":"Nothing to shift","type":"print","time":8781}
+{"testID":53,"messageType":"print","message":"No overlap widget for: {id: id1, x: 1, y: 1, width: 1, height: 1}","type":"print","time":8782}
+{"testID":53,"messageType":"print","message":"Nothing to shift","type":"print","time":8783}
+{"testID":53,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8783}
+{"test":{"id":54,"name":"should notify when widget moved overlapping itself","suiteID":36,"groupIDs":[51],"metadata":{"skip":false,"skipReason":null},"line":51,"column":3,"url":"file:///app/test/dashboard_notifier_test.dart"},"type":"testStart","time":8784}
+{"testID":54,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 2, height: 2}","type":"print","time":8791}
+{"testID":54,"messageType":"print","message":"Nothing to shift","type":"print","time":8791}
+{"testID":54,"messageType":"print","message":"No overlap widget for: {id: id1, x: 1, y: 1, width: 2, height: 2}","type":"print","time":8791}
+{"testID":54,"messageType":"print","message":"Nothing to shift","type":"print","time":8791}
+{"testID":54,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8791}
+{"test":{"id":55,"name":"should not notify when nothing happens","suiteID":36,"groupIDs":[51],"metadata":{"skip":false,"skipReason":null},"line":74,"column":3,"url":"file:///app/test/dashboard_notifier_test.dart"},"type":"testStart","time":8791}
+{"testID":55,"messageType":"print","message":"No overlap widget for: {id: id1, x: 0, y: 0, width: 2, height: 2}","type":"print","time":8795}
+{"testID":55,"messageType":"print","message":"Nothing to shift","type":"print","time":8796}
+{"testID":55,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":8796}
+{"suite":{"id":56,"platform":"vm","path":"/app/test/table/table_delegate_test.dart"},"type":"suite","time":9255}
+{"test":{"id":57,"name":"loading /app/test/table/table_delegate_test.dart","suiteID":56,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":9256}
+
+[{"event":"test.startedProcess","params":{"vmServiceUri":"http://127.0.0.1:46217/DezE-DWvj94=/"}}]
+{"testID":57,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":10263}
+{"group":{"id":58,"suiteID":56,"parentID":null,"name":"","metadata":{"skip":false,"skipReason":null},"testCount":7,"line":null,"column":null,"url":null},"type":"group","time":10264}
+{"group":{"id":59,"suiteID":56,"parentID":58,"name":"TableCellBuilderDelegate","metadata":{"skip":false,"skipReason":null},"testCount":5,"line":10,"column":3,"url":"file:///app/test/table/table_delegate_test.dart"},"type":"group","time":10264}
+{"test":{"id":60,"name":"TableCellBuilderDelegate columnCount setter updates maxXIndex and respects pinnedColumnCount","suiteID":56,"groupIDs":[58,59],"metadata":{"skip":false,"skipReason":null},"line":40,"column":5,"url":"file:///app/test/table/table_delegate_test.dart"},"type":"testStart","time":10264}
+{"testID":60,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":10312}
+{"test":{"id":61,"name":"TableCellBuilderDelegate rowCount setter updates maxYIndex and respects pinnedRowCount","suiteID":56,"groupIDs":[58,59],"metadata":{"skip":false,"skipReason":null},"line":54,"column":5,"url":"file:///app/test/table/table_delegate_test.dart"},"type":"testStart","time":10312}
+{"testID":61,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":10318}
+{"test":{"id":62,"name":"TableCellBuilderDelegate columnCount and rowCount can be null","suiteID":56,"groupIDs":[58,59],"metadata":{"skip":false,"skipReason":null},"line":64,"column":5,"url":"file:///app/test/table/table_delegate_test.dart"},"type":"testStart","time":10318}
+{"testID":62,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":10322}
+{"test":{"id":63,"name":"TableCellBuilderDelegate pinnedColumnCount setter updates value and notifies listeners","suiteID":56,"groupIDs":[58,59],"metadata":{"skip":false,"skipReason":null},"line":72,"column":5,"url":"file:///app/test/table/table_delegate_test.dart"},"type":"testStart","time":10322}
+{"testID":63,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":10326}
+{"test":{"id":64,"name":"TableCellBuilderDelegate pinnedRowCount setter updates value and notifies listeners","suiteID":56,"groupIDs":[58,59],"metadata":{"skip":false,"skipReason":null},"line":90,"column":5,"url":"file:///app/test/table/table_delegate_test.dart"},"type":"testStart","time":10327}
+{"testID":64,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":10331}
+{"group":{"id":65,"suiteID":56,"parentID":58,"name":"TableCellListDelegate","metadata":{"skip":false,"skipReason":null},"testCount":2,"line":109,"column":3,"url":"file:///app/test/table/table_delegate_test.dart"},"type":"group","time":10331}
+{"test":{"id":66,"name":"TableCellListDelegate pinnedColumnCount setter updates value and notifies listeners","suiteID":56,"groupIDs":[58,65],"metadata":{"skip":false,"skipReason":null},"line":126,"column":5,"url":"file:///app/test/table/table_delegate_test.dart"},"type":"testStart","time":10331}
+{"testID":66,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":10340}
+{"test":{"id":67,"name":"TableCellListDelegate pinnedRowCount setter updates value and notifies listeners","suiteID":56,"groupIDs":[58,65],"metadata":{"skip":false,"skipReason":null},"line":144,"column":5,"url":"file:///app/test/table/table_delegate_test.dart"},"type":"testStart","time":10340}
+{"testID":67,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":10344}
+{"success":true,"type":"done","time":11140}

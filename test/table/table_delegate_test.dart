@@ -37,16 +37,19 @@ void main() {
       );
     });
 
-    test('columnCount setter updates maxXIndex and respects pinnedColumnCount', () {
-      delegate.columnCount = 20;
-      expect(delegate.columnCount, 20);
-      // maxXIndex is private in TwoDimensionalChildBuilderDelegate, but we can check columnCount
+    test(
+      'columnCount setter updates maxXIndex and respects pinnedColumnCount',
+      () {
+        delegate.columnCount = 20;
+        expect(delegate.columnCount, 20);
+        // maxXIndex is private in TwoDimensionalChildBuilderDelegate, but we can check columnCount
 
-      delegate.pinnedColumnCount = 5;
-      expect(() => delegate.columnCount = 4, throwsAssertionError);
-      expect(() => delegate.columnCount = 5, returnsNormally);
-      expect(delegate.columnCount, 5);
-    });
+        delegate.pinnedColumnCount = 5;
+        expect(() => delegate.columnCount = 4, throwsAssertionError);
+        expect(() => delegate.columnCount = 5, returnsNormally);
+        expect(delegate.columnCount, 5);
+      },
+    );
 
     test('rowCount setter updates maxYIndex and respects pinnedRowCount', () {
       delegate.rowCount = 20;
@@ -109,15 +112,14 @@ void main() {
     setUp(() {
       final cells = List.generate(
         3,
-        (r) => List.generate(
-          3,
-          (c) => TableViewCell(child: Text('$r,$c')),
-        ),
+        (r) => List.generate(3, (c) => TableViewCell(child: Text('$r,$c'))),
       );
       delegate = TableCellListDelegate(
         cells: cells,
-        columnBuilder: (index) => const TableSpan(extent: FixedTableSpanExtent(100)),
-        rowBuilder: (index) => const TableSpan(extent: FixedTableSpanExtent(100)),
+        columnBuilder:
+            (index) => const TableSpan(extent: FixedTableSpanExtent(100)),
+        rowBuilder:
+            (index) => const TableSpan(extent: FixedTableSpanExtent(100)),
       );
     });
 

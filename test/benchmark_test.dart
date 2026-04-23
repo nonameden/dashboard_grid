@@ -10,50 +10,72 @@ void main() {
     Widget dummyBuilder(BuildContext context) => const SizedBox();
 
     for (int i = 0; i < 5000; i++) {
-      from.add(DashboardWidget(id: 'widget_$i', width: 1, height: 1, x: i % 10, y: i ~/ 10, builder: dummyBuilder));
-      to.add(DashboardWidget(id: 'widget_$i', width: 1, height: 1, x: (i + 1) % 10, y: (i + 1) ~/ 10, builder: dummyBuilder));
+      from.add(
+        DashboardWidget(
+          id: 'widget_$i',
+          width: 1,
+          height: 1,
+          x: i % 10,
+          y: i ~/ 10,
+          builder: dummyBuilder,
+        ),
+      );
+      to.add(
+        DashboardWidget(
+          id: 'widget_$i',
+          width: 1,
+          height: 1,
+          x: (i + 1) % 10,
+          y: (i + 1) ~/ 10,
+          builder: dummyBuilder,
+        ),
+      );
     }
 
     final stopwatch1 = Stopwatch()..start();
     // Baseline logic
-    final movedWidgets1 = from.map((fromWidget) {
-      DashboardWidget? toWidget;
-      for (var w in to) {
-        if (w.id == fromWidget.id) {
-          toWidget = w;
-          break;
-        }
-      }
+    final movedWidgets1 =
+        from.map((fromWidget) {
+          DashboardWidget? toWidget;
+          for (var w in to) {
+            if (w.id == fromWidget.id) {
+              toWidget = w;
+              break;
+            }
+          }
 
-      final hasMoved =
-          toWidget != null &&
-          (fromWidget.x != toWidget.x || fromWidget.y != toWidget.y);
+          final hasMoved =
+              toWidget != null &&
+              (fromWidget.x != toWidget.x || fromWidget.y != toWidget.y);
 
-      if (hasMoved) {
-        return DashboardGridChangeSnapshot(from: fromWidget, to: toWidget);
-      }
+          if (hasMoved) {
+            return DashboardGridChangeSnapshot(from: fromWidget, to: toWidget);
+          }
 
-      return null;
-    }).toList();
+          return null;
+        }).toList();
     stopwatch1.stop();
-    print('Baseline duration for O(N^2) list search: ${stopwatch1.elapsedMilliseconds} ms');
+    print(
+      'Baseline duration for O(N^2) list search: ${stopwatch1.elapsedMilliseconds} ms',
+    );
 
     final stopwatch2 = Stopwatch()..start();
     // Optimized logic
     final toMap = {for (var w in to) w.id: w};
-    final movedWidgets2 = from.map((fromWidget) {
-      final toWidget = toMap[fromWidget.id];
+    final movedWidgets2 =
+        from.map((fromWidget) {
+          final toWidget = toMap[fromWidget.id];
 
-      final hasMoved =
-          toWidget != null &&
-          (fromWidget.x != toWidget.x || fromWidget.y != toWidget.y);
+          final hasMoved =
+              toWidget != null &&
+              (fromWidget.x != toWidget.x || fromWidget.y != toWidget.y);
 
-      if (hasMoved) {
-        return DashboardGridChangeSnapshot(from: fromWidget, to: toWidget);
-      }
+          if (hasMoved) {
+            return DashboardGridChangeSnapshot(from: fromWidget, to: toWidget);
+          }
 
-      return null;
-    }).toList();
+          return null;
+        }).toList();
     stopwatch2.stop();
     print('Optimized duration with Map: ${stopwatch2.elapsedMilliseconds} ms');
 

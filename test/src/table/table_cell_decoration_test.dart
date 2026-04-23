@@ -40,7 +40,10 @@ void main() {
       expect(decoration.decoration, isA<BoxDecoration>());
       final boxDecoration = decoration.decoration as BoxDecoration;
       expect(boxDecoration.color, Colors.grey);
-      expect(boxDecoration.borderRadius, const BorderRadius.all(Radius.circular(10)));
+      expect(
+        boxDecoration.borderRadius,
+        const BorderRadius.all(Radius.circular(10)),
+      );
       expect(boxDecoration.border, const Border());
     });
 
@@ -62,9 +65,15 @@ void main() {
     });
 
     test('equality and hashCode', () {
-      const decoration1 = TableCellDecoration(decoration: BoxDecoration(color: Colors.red));
-      const decoration2 = TableCellDecoration(decoration: BoxDecoration(color: Colors.red));
-      const decoration3 = TableCellDecoration(decoration: BoxDecoration(color: Colors.blue));
+      const decoration1 = TableCellDecoration(
+        decoration: BoxDecoration(color: Colors.red),
+      );
+      const decoration2 = TableCellDecoration(
+        decoration: BoxDecoration(color: Colors.red),
+      );
+      const decoration3 = TableCellDecoration(
+        decoration: BoxDecoration(color: Colors.blue),
+      );
 
       expect(decoration1, equals(decoration2));
       expect(decoration1.hashCode, equals(decoration2.hashCode));
