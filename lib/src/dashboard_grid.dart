@@ -216,8 +216,11 @@ class DashboardGrid with ChangeNotifier {
     List<DashboardWidget> from,
     List<DashboardWidget> to,
   ) {
+    final fromMap = {for (final w in from) w.id: w};
+    final toMap = {for (final w in to) w.id: w};
+
     final addedWidgets = to.map((toWidget) {
-      final isNew = !from.any((fromWidget) => fromWidget.id == toWidget.id);
+      final isNew = !fromMap.containsKey(toWidget.id);
       if (isNew) {
         return DashboardGridChangeSnapshot(from: null, to: toWidget);
       }
@@ -226,7 +229,7 @@ class DashboardGrid with ChangeNotifier {
     });
 
     final removedWidgets = from.map((fromWidget) {
-      final isRemoved = !to.any((toWidget) => toWidget.id == fromWidget.id);
+      final isRemoved = !toMap.containsKey(fromWidget.id);
       if (isRemoved) {
         return DashboardGridChangeSnapshot(from: fromWidget, to: null);
       }
@@ -235,9 +238,7 @@ class DashboardGrid with ChangeNotifier {
     });
 
     final movedWidgets = from.map((fromWidget) {
-      final toWidget = to.firstWhereOrNull(
-        (toWidget) => toWidget.id == fromWidget.id,
-      );
+      final toWidget = toMap[fromWidget.id];
       final hasMoved =
           toWidget != null &&
           (fromWidget.x != toWidget.x || fromWidget.y != toWidget.y);
