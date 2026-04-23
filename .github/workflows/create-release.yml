@@ -10,6 +10,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Required for OIDC pub.dev publishing
+      contents: write # Required for committing, tagging, and creating GitHub releases
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -17,18 +20,41 @@ jobs:
           # Fetch all history for all branches and tags
           fetch-depth: 0
 
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Update version in pubspec.yaml
+        run: |
+          sed -i "s/^version: .*/version: ${{ github.event.inputs.version }}/" pubspec.yaml
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
       - name: Generate changelog from commit messages
         id: changelog
         run: |
-          LAST_TAG=$(git describe --tags --abbrev=0)
-          echo "Generating changelog from $LAST_TAG to HEAD"
-          CHANGELOG_CONTENT=$(git log --pretty=format:"- %s" $LAST_TAG..HEAD)
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            echo "No previous tags found. Generating changelog from the beginning."
+            CHANGELOG_CONTENT=$(git log --pretty=format:"- %s")
+          else
+            echo "Generating changelog from $LAST_TAG to HEAD"
+            CHANGELOG_CONTENT=$(git log --pretty=format:"- %s" $LAST_TAG..HEAD)
+          fi
           echo "CHANGELOG_CONTENT<<EOF" >> $GITHUB_ENV
           echo "$CHANGELOG_CONTENT" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Update CHANGELOG.md
         run: |
+          if [ ! -f CHANGELOG.md ]; then
+            touch CHANGELOG.md
+          fi
           echo "## v${{ github.event.inputs.version }}" > CHANGELOG.new.md
           echo "" >> CHANGELOG.new.md
           echo "${{ env.CHANGELOG_CONTENT }}" >> CHANGELOG.new.md
@@ -40,22 +66,26 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add CHANGELOG.md
-          git commit -m "chore: Update CHANGELOG.md for v${{ github.event.inputs.version }}"
+          git add pubspec.yaml CHANGELOG.md
+          git commit -m "chore: Release v${{ github.event.inputs.version }}"
           git tag -a "v${{ github.event.inputs.version }}" -m "Release v${{ github.event.inputs.version }}"
 
+      - name: Push changes
+        run: |
+          git push origin HEAD:${{ github.ref_name }}
+          git push origin --tags
+
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: "v${{ github.event.inputs.version }}"
-          release_name: "Release v${{ github.event.inputs.version }}"
+          name: "Release v${{ github.event.inputs.version }}"
           body: ${{ env.CHANGELOG_CONTENT }}
           draft: false
           prerelease: false
 
-      - name: Push changes
-        run: |
-          git push origin main
-          git push origin --tags
+      - name: Setup Dart for pub.dev
+        uses: dart-lang/setup-dart@v1
+
+      - name: Publish to pub.dev
+        run: dart pub publish --force

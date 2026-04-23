@@ -104,14 +104,7 @@ class DashboardGrid with ChangeNotifier {
       return a.y.compareTo(b.y);
     });
 
-    _widgets = result;
-    _updateHeightIfNeed();
-
-    if (listener != null) {
-      final changes = _findDifference(backUp._widgets, result);
-      listener!(changes);
-    }
-    notifyListeners();
+    _commitState(result, backUp);
   }
 
   /// Removes a widget from the dashboard.
@@ -120,11 +113,15 @@ class DashboardGrid with ChangeNotifier {
     final result =
         _widgets.where((element) => element.id != widget.id).toList();
 
-    _widgets = result;
+    _commitState(result, backUp);
+  }
+
+  void _commitState(List<DashboardWidget> newWidgets, DashboardGrid backUp) {
+    _widgets = newWidgets;
     _updateHeightIfNeed();
 
     if (listener != null) {
-      final changes = _findDifference(backUp._widgets, result);
+      final changes = _findDifference(backUp._widgets, newWidgets);
       listener!(changes);
     }
     notifyListeners();
@@ -198,13 +195,20 @@ class DashboardGrid with ChangeNotifier {
     List<DashboardWidget> base,
     DashboardWidget widget,
   ) {
-    for (var x = widget.x; x < widget.x + widget.width; x++) {
-      for (var y = widget.y; y < widget.y + widget.height; y++) {
-        final widget = _getWidgetAt(base, x, y);
-        if (widget != null) {
-          _debug('Overlap widget: $widget');
-          return widget;
-        }
+    final minX = widget.x;
+    final maxX = minX + widget.width;
+    final minY = widget.y;
+    final maxY = minY + widget.height;
+
+    for (final baseWidget in base) {
+      final baseMinX = baseWidget.x;
+      final baseMaxX = baseMinX + baseWidget.width;
+      final baseMinY = baseWidget.y;
+      final baseMaxY = baseMinY + baseWidget.height;
+
+      if (minX < baseMaxX && maxX > baseMinX && minY < baseMaxY && maxY > baseMinY) {
+        _debug('Overlap widget: $baseWidget');
+        return baseWidget;
       }
     }
 
