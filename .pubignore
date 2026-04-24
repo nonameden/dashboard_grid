@@ -1,0 +1,14 @@
+# Exclude test files
+test/
+integration_test/
+
+# Exclude coverage output
+coverage/
+
+# Exclude unneeded assets
+example/
+dashboard_grid_devtools_extension/
+benchmark.dart
+
+# But MAKE SURE we include devtools build
+!extension/devtools/build/

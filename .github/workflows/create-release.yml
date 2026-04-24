@@ -35,6 +35,13 @@ jobs:
       - name: Run tests
         run: flutter test
 
+      - name: Build DevTools extension
+        run: |
+          cd dashboard_grid_devtools_extension
+          flutter pub get
+          dart run devtools_extensions build_and_copy --source=. --dest=../extension/devtools
+          cd ..
+
       - name: Generate changelog from commit messages
         id: changelog
         run: |
@@ -66,10 +73,9 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add pubspec.yaml CHANGELOG.md
+          git add pubspec.yaml CHANGELOG.md extension/devtools/build
           git commit -m "chore: Release v${{ github.event.inputs.version }}"
           git tag -a "v${{ github.event.inputs.version }}" -m "Release v${{ github.event.inputs.version }}"
-
       - name: Push changes
         run: |
           git push origin HEAD:${{ github.ref_name }}
@@ -83,6 +89,7 @@ jobs:
           body: ${{ env.CHANGELOG_CONTENT }}
           draft: false
           prerelease: false
+
 
       - name: Setup Dart for pub.dev
         uses: dart-lang/setup-dart@v1

@@ -29,3 +29,6 @@ migrate_working_dir/
 .flutter-plugins
 .flutter-plugins-dependencies
 build/
+
+# Let's include the built devtools extension, pub publish needs it
+!extension/devtools/build/
