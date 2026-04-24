@@ -1,3 +1,7 @@
+## v0.0.8
+
+- fix(ci): fix pub.dev publishing missing devtools build artifacts (#20)
+
 ## v0.0.7
 
 - feat: rewrite create-release.yml to use OIDC for pub.dev publish (#18)
