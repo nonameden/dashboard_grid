@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 import 'dashboard_widget.dart';
@@ -9,7 +8,7 @@ import 'dashboard_widget.dart';
 class DashboardGridChangeSnapshot {
   /// Creates a snapshot of a change in the dashboard grid.
   DashboardGridChangeSnapshot({required this.from, required this.to})
-      : assert(from != null || to != null, 'Either from or to must be not null');
+    : assert(from != null || to != null, 'Either from or to must be not null');
 
   /// The widget before the change.
   final DashboardWidget? from;
@@ -58,31 +57,26 @@ class DashboardGrid with ChangeNotifier {
 
   /// A listener for changes in the dashboard grid.
   DashboardGridChangeListener? listener;
-  List<DashboardWidget> _widgets = [];
+  Map<String, DashboardWidget> _widgets = {};
 
   /// The number of widgets in the dashboard.
   int get size => _widgets.length;
 
   /// The widgets in the dashboard.
-  Iterable<DashboardWidget> get widgets => [..._widgets];
+  Iterable<DashboardWidget> get widgets => _widgets.values;
 
   /// Returns the widget at the given coordinates.
   DashboardWidget? getWidgetAt({required int x, required int y}) {
-    return _getWidgetAt(_widgets, x, y);
+    return _getWidgetAt(_widgets.values, x, y);
   }
 
   /// Moves a widget to the given coordinates.
   void moveWidget(String widgetId, {required int x, required int y}) {
-    DashboardWidget? widget;
-    try {
-      widget = _widgets.firstWhere((element) => element.id == widgetId);
-      addWidget(widget.copyWith(x: x, y: y));
-    } catch (e) {
-      if (widget != null) {
-        _widgets.add(widget);
-      }
-      rethrow;
+    final widget = _widgets[widgetId];
+    if (widget == null) {
+      throw StateError('Widget with id $widgetId not found');
     }
+    addWidget(widget.copyWith(x: x, y: y));
   }
 
   /// Adds a widget to the dashboard.
@@ -93,7 +87,7 @@ class DashboardGrid with ChangeNotifier {
       width: math.min(maxColumns, widget.width),
     );
     final result = _addWidget(
-      _widgets.whereNot((w) => w.id == widgetToAdd.id).toList(),
+      _widgets.values.where((w) => w.id != widgetToAdd.id).toList(),
       widgetToAdd,
     );
     result.sort((a, b) {
@@ -104,19 +98,22 @@ class DashboardGrid with ChangeNotifier {
       return a.y.compareTo(b.y);
     });
 
-    _commitState(result, backUp);
+    _commitState({for (final w in result) w.id: w}, backUp);
   }
 
   /// Removes a widget from the dashboard.
   void removeWidget(DashboardWidget widget) {
     final backUp = copy();
-    final result =
-        _widgets.where((element) => element.id != widget.id).toList();
+    final result = Map<String, DashboardWidget>.from(_widgets);
+    result.remove(widget.id);
 
     _commitState(result, backUp);
   }
 
-  void _commitState(List<DashboardWidget> newWidgets, DashboardGrid backUp) {
+  void _commitState(
+    Map<String, DashboardWidget> newWidgets,
+    DashboardGrid backUp,
+  ) {
     _widgets = newWidgets;
     _updateHeightIfNeed();
 
@@ -143,14 +140,14 @@ class DashboardGrid with ChangeNotifier {
 
   void _updateHeightIfNeed() {
     var currentMaxHeight = 0;
-    for (final widget in _widgets) {
+    for (final widget in _widgets.values) {
       currentMaxHeight = math.max(currentMaxHeight, widget.y + widget.height);
     }
 
     currentHeight = currentMaxHeight + 1;
   }
 
-  DashboardWidget? _getWidgetAt(List<DashboardWidget> base, int x, int y) {
+  DashboardWidget? _getWidgetAt(Iterable<DashboardWidget> base, int x, int y) {
     for (final widget in base) {
       final minX = widget.x;
       final maxX = minX + widget.width;
@@ -206,7 +203,10 @@ class DashboardGrid with ChangeNotifier {
       final baseMinY = baseWidget.y;
       final baseMaxY = baseMinY + baseWidget.height;
 
-      if (minX < baseMaxX && maxX > baseMinX && minY < baseMaxY && maxY > baseMinY) {
+      if (minX < baseMaxX &&
+          maxX > baseMinX &&
+          minY < baseMaxY &&
+          maxY > baseMinY) {
         _debug('Overlap widget: $baseWidget');
         return baseWidget;
       }
@@ -217,13 +217,10 @@ class DashboardGrid with ChangeNotifier {
   }
 
   Iterable<DashboardGridChangeSnapshot> _findDifference(
-    List<DashboardWidget> from,
-    List<DashboardWidget> to,
+    Map<String, DashboardWidget> fromMap,
+    Map<String, DashboardWidget> toMap,
   ) {
-    final fromMap = {for (final w in from) w.id: w};
-    final toMap = {for (final w in to) w.id: w};
-
-    final addedWidgets = to.map((toWidget) {
+    final addedWidgets = toMap.values.map((toWidget) {
       final isNew = !fromMap.containsKey(toWidget.id);
       if (isNew) {
         return DashboardGridChangeSnapshot(from: null, to: toWidget);
@@ -232,7 +229,7 @@ class DashboardGrid with ChangeNotifier {
       return null;
     });
 
-    final removedWidgets = from.map((fromWidget) {
+    final removedWidgets = fromMap.values.map((fromWidget) {
       final isRemoved = !toMap.containsKey(fromWidget.id);
       if (isRemoved) {
         return DashboardGridChangeSnapshot(from: fromWidget, to: null);
@@ -241,7 +238,7 @@ class DashboardGrid with ChangeNotifier {
       return null;
     });
 
-    final movedWidgets = from.map((fromWidget) {
+    final movedWidgets = fromMap.values.map((fromWidget) {
       final toWidget = toMap[fromWidget.id];
       final hasMoved =
           toWidget != null &&
@@ -269,7 +266,9 @@ class DashboardGrid with ChangeNotifier {
   /// Creates a copy of this dashboard grid.
   DashboardGrid copy() {
     return DashboardGrid(maxColumns: maxColumns, currentHeight: currentHeight)
-      .._widgets = _widgets.map((e) => e.copyWith()).toList();
+      .._widgets = {
+        for (final entry in _widgets.entries) entry.key: entry.value.copyWith(),
+      };
   }
 
   @override
@@ -279,7 +278,7 @@ class DashboardGrid with ChangeNotifier {
           runtimeType == other.runtimeType &&
           maxColumns == other.maxColumns &&
           currentHeight == other.currentHeight &&
-          _widgets == other._widgets;
+          mapEquals(_widgets, other._widgets);
 
   @override
   int get hashCode =>
