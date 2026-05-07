@@ -9,7 +9,7 @@ import 'dashboard_widget.dart';
 class DashboardGridChangeSnapshot {
   /// Creates a snapshot of a change in the dashboard grid.
   DashboardGridChangeSnapshot({required this.from, required this.to})
-      : assert(from != null || to != null, 'Either from or to must be not null');
+    : assert(from != null || to != null, 'Either from or to must be not null');
 
   /// The widget before the change.
   final DashboardWidget? from;
@@ -151,14 +151,12 @@ class DashboardGrid with ChangeNotifier {
   }
 
   DashboardWidget? _getWidgetAt(List<DashboardWidget> base, int x, int y) {
-    for (final widget in base) {
-      final minX = widget.x;
-      final maxX = minX + widget.width;
-
-      final minY = widget.y;
-      final maxY = minY + widget.height;
-
-      if (minX <= x && x < maxX && minY <= y && y < maxY) {
+    for (var i = 0; i < base.length; i++) {
+      final widget = base[i];
+      if (widget.x <= x &&
+          widget.y <= y &&
+          x < widget.x + widget.width &&
+          y < widget.y + widget.height) {
         return widget;
       }
     }
@@ -206,7 +204,10 @@ class DashboardGrid with ChangeNotifier {
       final baseMinY = baseWidget.y;
       final baseMaxY = baseMinY + baseWidget.height;
 
-      if (minX < baseMaxX && maxX > baseMinX && minY < baseMaxY && maxY > baseMinY) {
+      if (minX < baseMaxX &&
+          maxX > baseMinX &&
+          minY < baseMaxY &&
+          maxY > baseMinY) {
         _debug('Overlap widget: $baseWidget');
         return baseWidget;
       }
