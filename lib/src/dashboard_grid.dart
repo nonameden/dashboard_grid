@@ -110,8 +110,11 @@ class DashboardGrid with ChangeNotifier {
   /// Removes a widget from the dashboard.
   void removeWidget(DashboardWidget widget) {
     final backUp = copy();
-    final result =
-        _widgets.where((element) => element.id != widget.id).toList();
+    final result = List.of(_widgets);
+    final index = result.indexWhere((element) => element.id == widget.id);
+    if (index != -1) {
+      result.removeAt(index);
+    }
 
     _commitState(result, backUp);
   }
