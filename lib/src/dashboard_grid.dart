@@ -227,41 +227,26 @@ class DashboardGrid with ChangeNotifier {
     final fromMap = {for (final w in from) w.id: w};
     final toMap = {for (final w in to) w.id: w};
 
-    final addedWidgets = to.map((toWidget) {
-      final isNew = !fromMap.containsKey(toWidget.id);
-      if (isNew) {
-        return DashboardGridChangeSnapshot(from: null, to: toWidget);
+    final changes = <DashboardGridChangeSnapshot>[];
+
+    for (final toWidget in to) {
+      final fromWidget = fromMap[toWidget.id];
+      if (fromWidget == null) {
+        changes.add(DashboardGridChangeSnapshot(from: null, to: toWidget));
+      } else if (fromWidget.x != toWidget.x || fromWidget.y != toWidget.y) {
+        changes.add(
+          DashboardGridChangeSnapshot(from: fromWidget, to: toWidget),
+        );
       }
+    }
 
-      return null;
-    });
-
-    final removedWidgets = from.map((fromWidget) {
-      final isRemoved = !toMap.containsKey(fromWidget.id);
-      if (isRemoved) {
-        return DashboardGridChangeSnapshot(from: fromWidget, to: null);
+    for (final fromWidget in from) {
+      if (!toMap.containsKey(fromWidget.id)) {
+        changes.add(DashboardGridChangeSnapshot(from: fromWidget, to: null));
       }
+    }
 
-      return null;
-    });
-
-    final movedWidgets = from.map((fromWidget) {
-      final toWidget = toMap[fromWidget.id];
-      final hasMoved =
-          toWidget != null &&
-          (fromWidget.x != toWidget.x || fromWidget.y != toWidget.y);
-
-      if (hasMoved) {
-        return DashboardGridChangeSnapshot(from: fromWidget, to: toWidget);
-      }
-
-      return null;
-    });
-
-    return addedWidgets
-        .followedBy(removedWidgets)
-        .followedBy(movedWidgets)
-        .nonNulls;
+    return changes;
   }
 
   void _debug(String message) {
