@@ -95,7 +95,7 @@ class DashboardState extends State<Dashboard> {
           y: vicinity.yIndex - yOffset,
         );
       } on NotEnoughSpaceException {
-        // Oops
+        debugPrint('Not enough space to move widget.');
       } catch (e) {
         rethrow;
       }
@@ -107,7 +107,7 @@ class DashboardState extends State<Dashboard> {
           y: vicinity.yIndex,
         );
       } on NotEnoughSpaceException {
-        // Oops
+        debugPrint('Not enough space to move widget.');
       } catch (e) {
         rethrow;
       }
